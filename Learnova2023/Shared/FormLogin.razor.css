@@ -29,7 +29,7 @@ body {
 
 .container__svgs {
     background-color: var(--color2);
-    width: 50%;
+    width:50%;
     /* Flex */
     display: flex;
     flex-direction: column;
@@ -50,7 +50,7 @@ body {
 }
 
 .container__content {
-    width: 50%;
+    
     position: relative;
     /* Flex */
     display: flex;
@@ -126,3 +126,4 @@ body {
     height: 10px;
     margin: 0 15px;
 }
+
