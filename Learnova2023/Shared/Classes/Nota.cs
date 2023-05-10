@@ -2,7 +2,7 @@
 {
     public class Nota
     {
-        public DateOnly Date { get; set; }
+        public DateTime Date { get; set; }
         public Professore? Professore { get; set; }
         public string? Descrizione { get; set; }
 

@@ -1,10 +1,25 @@
 ﻿@page "/Index"
 
-<PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<RadzenScheduler  Data="@data" TItem="DataItem" StartProperty="Start" EndProperty="End" TextProperty="Text">
+  <RadzenYearView />
+  
+</RadzenScheduler>
+@code {
+    class DataItem
+    {
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public string Text { get; set; }
+    }
 
-Welcome to your new app.
-
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+    DataItem[] data = new DataItem[]
+    {
+      new DataItem
+      {
+        Start =DateTime.Today,
+        End = DateTime.Today.AddDays(1),
+        Text = "Birthday"
+      },
+    };
+}

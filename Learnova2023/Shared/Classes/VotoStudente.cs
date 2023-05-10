@@ -2,7 +2,7 @@
 {
     public class VotoStudente
     {
-        public DateOnly Data { get; set; }
+        public DateTime Data { get; set; }
         public float Voto { get; set; }
 
         public Professore Prof { get; set; }

@@ -23,7 +23,7 @@ body {
     padding-right: 0px;
     overflow: hidden;
     /* Flex */
-    display: flex;
+    
     
 }
 
@@ -112,7 +112,7 @@ body {
 }
 
     .container__sumbitButton:hover {
-        background-color: var(--color2Hover);
+        background-color: var(--color3);
     }
 
 
