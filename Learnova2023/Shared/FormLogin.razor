@@ -1,5 +1,7 @@
-﻿<div class='container  shadow-lg'>
-    <div class='container__svgs ' style="background-color:@orangeDarken4">
+﻿@inject NavigationManager Navigation
+
+<div class='container d-flex  shadow-lg'>
+    <div class='container__svgs d-none d-md-flex' style="background-color:@orangeDarken4">
         <div class="d-flex justify-content-center align-items-center mx-auto my-auto">
             <svg data-v-decfdd8a=""    version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="70 0 200 250"  style="margin: auto;">
                 
@@ -47,10 +49,10 @@
         
     </div>
     <div class='container__content justify-content-center align-items-center mx-auto my-auto'>
-        <form class='container__form'>
+        <form class='container__form' @onsubmit=Login>
             <input type='text' name='username' placeholder='Username' class='container__inputField'>
             <input type='password' name='password' placeholder='Password' class='container__inputField'>
-            <input type='submit' value='Login' class='container__sumbitButton'>
+            <input type='submit'  value='Login' class='container__sumbitButton'>
         </form>
         
     </div>
@@ -58,5 +60,8 @@
 
 @code{
     string orangeDarken4= Colors.Orange.Darken4;
-    
+    public void Login()
+    {
+        Navigation.NavigateTo("/Index");
+    }
 }
