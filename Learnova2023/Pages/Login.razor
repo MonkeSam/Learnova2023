@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject NavigationManager Navigation
+@inject HttpClient Http;
 
 <!--
 - Single file SVG animation
@@ -8,7 +9,7 @@
 -->
 
 <div class="vh-100 container-fluid d-flex justify-content-center align-items-center ">
-    <FormLogin></FormLogin>
+    <FormLogin OnConferma="@GetAccess"> </FormLogin>
     <div class="login position-absolute">
     
         <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
@@ -22,14 +23,17 @@
 </div>
 
 
+@code{
 
 
-
-
-
-@code {
     
-     
-    
+
+    public async Task GetAccess(LoginTemp t)
+    {
+        
+        string apiurl = $"/api/Login/GetRole?username={t.Username}&passwd={t.Password}";
+        string role = await Http.GetFromJsonAsync<string>(apiurl);
+
+        Navigation.NavigateTo($"/{role}");
+    }
 }
-

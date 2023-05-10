@@ -49,9 +49,9 @@
         
     </div>
     <div class='container__content justify-content-center align-items-center mx-auto my-auto'>
-        <form class='container__form' @onsubmit=Login>
-            <input type='text' name='username' placeholder='Username' class='container__inputField'>
-            <input type='password' name='password' placeholder='Password' class='container__inputField'>
+        <form class='container__form' @onsubmit="@(e=>OnConferma.InvokeAsync(temp))">
+            <input type='text' name='username' placeholder='Username' class='container__inputField' @bind=temp.Username>
+            <input type='password' name='password' placeholder='Password' class='container__inputField'@bind=temp.Password>
             <input type='submit'  value='Login' class='container__sumbitButton'>
         </form>
         
@@ -59,9 +59,14 @@
 </div>
 
 @code{
+
+    public LoginTemp temp = new LoginTemp("", "");
+
+    
+
+    [Parameter]
+    public EventCallback<LoginTemp> OnConferma { get; set; }
+
     string orangeDarken4= Colors.Orange.Darken4;
-    public void Login()
-    {
-        Navigation.NavigateTo("/Index");
-    }
+    
 }
