@@ -23,6 +23,8 @@ namespace Learnova2023.API.ContextDB
                         .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true);
             IConfiguration _configuration = builder.Build();
         }
+        
+        
         public static string Login(string username, string paswd)
         {
             string query = $"call Learnova5H.Login(@username, @paswd,@isCheck1, @isCheck2)";
@@ -77,6 +79,9 @@ namespace Learnova2023.API.ContextDB
                         }
 
                     }
+
+
+
                     return Enum.GetName(tipo);
                 }
             }

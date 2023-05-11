@@ -9,7 +9,7 @@
 -->
 
 <div class="vh-100 container-fluid d-flex justify-content-center align-items-center ">
-    <FormLogin OnConferma="@GetAccess"> </FormLogin>
+    <FormLogin OnConferma="GetAccess"  > </FormLogin>
     <div class="login position-absolute">
     
         <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
@@ -18,7 +18,7 @@
             <path fill="@($"{Colors.Orange.Darken4}")" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z" />
             <path fill="@($"{Colors.Yellow.Darken2}")" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z" />
         </svg>
-    
+        
     </div>
 </div>
 
@@ -26,14 +26,25 @@
 @code{
 
 
-    
-
-    public async Task GetAccess(LoginTemp t)
+    public  async Task GetAccess(LoginTemp temp)
     {
-        
-        string apiurl = $"/api/Login/GetRole?username={t.Username}&passwd={t.Password}";
-        string role = await Http.GetFromJsonAsync<string>(apiurl);
 
-        Navigation.NavigateTo($"/{role}");
+        string apiurl = $"/api/Login/GetRole?username={temp.Username}&passwd={temp.Password}";
+
+
+
+        Console.WriteLine(apiurl);
+        string? role = await Http.GetStringAsync(apiurl);
+
+        if (role != "not_found")
+        {
+            Navigation.NavigateTo($"/{role}");
+        }
+        else
+        {
+            
+        }
+
+        
     }
 }
