@@ -1,18 +1,33 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
+<RadzenLayout style="height: 100%">
+    <RadzenHeader Style=@($"background-color:{orangeDarken4}")>
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="0">
+            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
+            <RadzenLabel Text="Header" />
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
+        <RadzenPanelMenu>
+            <RadzenPanelMenuItem Text="Home" Icon="home" />
+            <RadzenPanelMenuItem Text="Users" Icon="account_box" />
+        </RadzenPanelMenu>
+        <div class="rz-p-4">
+            Sidebar
+        </div>
+    </RadzenSidebar>
+    <RadzenBody>
+        <div class="rz-p-4 h-100">
+            @Body
+        </div>
+    </RadzenBody>
+    <RadzenFooter>
+        Footer
+    </RadzenFooter>
+</RadzenLayout>
 
-<MudLayout>
-    <MudAppBar>
-        My Application
-    </MudAppBar>
-    <MudDrawer Open="true">
-        <NavMenu></NavMenu>
-    </MudDrawer>
-    <MudMainContent>
-        
-        @Body
-    </MudMainContent>
-</MudLayout>
+@code {
+    bool sidebar1Expanded = true;
+    string orangeDarken4 = Colors.Orange.Darken4;
+    
+}

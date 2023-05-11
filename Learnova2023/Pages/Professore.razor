@@ -1,8 +1,10 @@
 ﻿@page "/Professore"
+@layout MainLayout
 <h1>Professore</h1>
 
 <RadzenScheduler  Data="@data" TItem="DataItem" StartProperty="Start" EndProperty="End" TextProperty="Text">
-  <RadzenYearView />
+    <RadzenYearView />
+    <RadzenMonthView />
   
 </RadzenScheduler>
 @code {
