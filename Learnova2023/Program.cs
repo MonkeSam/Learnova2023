@@ -23,6 +23,7 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddScoped<TooltipService>();
+builder.Services.AddSingleton<StatoApp>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject NavigationManager Navigation
-@inject HttpClient Http;
+@inject HttpClient Http
+@inject StatoApp StatoApp
 
 <!--
 - Single file SVG animation
@@ -29,16 +30,20 @@
     public  async Task GetAccess(LoginTemp temp)
     {
 
-        string apiurl = $"/api/Login/GetRole?username={temp.Username}&passwd={temp.Password}";
+        string GetRoleApi = $"/api/Login/GetRole?username={temp.Username}&passwd={temp.Password}";
 
 
 
-        Console.WriteLine(apiurl);
-        string? role = await Http.GetStringAsync(apiurl);
 
-        if (role != "not_found")
+        string[]? role = await Http.GetFromJsonAsync<string[]>(GetRoleApi);
+
+        if (role[0] != "not_found")
         {
-            Navigation.NavigateTo($"/{role}");
+            StatoApp.Role = role[0];
+            StatoApp.Username = temp.Username;
+            StatoApp.SessionString = role[1];
+            //Navigation.NavigateTo($"/{role}/Home/{StatoApp.SessionString}");
+            Navigation.NavigateTo($"/{role[0]}/Home");
         }
         else
         {

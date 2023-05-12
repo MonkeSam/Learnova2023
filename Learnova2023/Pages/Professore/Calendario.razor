@@ -1,12 +1,21 @@
-﻿@page "/Professore"
+﻿@page "/Professore/Calendario"
 @layout MainLayout
-<h1>Professore</h1>
+<h3>Calendario</h3>
 
-<RadzenScheduler  Data="@data" TItem="DataItem" StartProperty="Start" EndProperty="End" TextProperty="Text">
-    <RadzenYearView />
+<RadzenScheduler class="h-100" Data="@data" TItem="DataItem" StartProperty="Start" EndProperty="End" TextProperty="Text">
+    
     <RadzenMonthView />
-  
+
 </RadzenScheduler>
+
+<style>
+    .rz-scheduler-nav-views .rz-button.rz-primary.rz-state-active {
+        color: @Colors.Orange.Darken3 !important;
+        background-color: @Colors.Amber.Lighten4 !important
+    }
+
+</style>
+
 @code {
     class DataItem
     {

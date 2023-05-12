@@ -10,9 +10,9 @@ namespace Learnova2023.API.Controllers
     public class LoginController
     {
         [HttpGet(nameof(GetRole))]
-        public string GetRole(string username, string passwd)
+        public string[] GetRole(string username, string passwd)
         {
-            return ContextClassi.Login(username, passwd);
+            return ContextDBLogin.Login(username, passwd);
         }
     }
 }
