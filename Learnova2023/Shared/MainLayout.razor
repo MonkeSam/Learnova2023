@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 @inject StatoApp StatoApp
+
 <RadzenLayout style="height: 100%">
     <RadzenHeader Style=@($"background-color:{Colors.Orange.Darken4}") >
         
@@ -92,7 +93,7 @@
     {
         
         //Navigation.NavigateTo($"/Professore/{e.Text}/{StatoApp.SessionString}");
-        Navigation.NavigateTo($"/Professore/{e.Text}");
+        Navigation.NavigateTo($"/{StatoApp.Role}/{e.Text}");
     }
 
 }

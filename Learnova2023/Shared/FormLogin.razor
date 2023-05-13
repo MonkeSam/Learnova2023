@@ -1,5 +1,10 @@
 ﻿@inject NavigationManager Navigation
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
 
+<MudThemeProvider Theme="MyCustomTheme"></MudThemeProvider>
+<MudDialogProvider />
+<MudSnackbarProvider />
 <div class='container d-flex  shadow-lg'>
     <div class='container__svgs d-none d-md-flex' style="background-color:@orangeDarken4">
         <div class="d-flex justify-content-center align-items-center mx-auto my-auto">
@@ -49,20 +54,52 @@
         
     </div>
     <div class='container__content justify-content-center align-items-center mx-auto my-auto'>
-        <form class='container__form' @onsubmit="@(e=>OnConferma.InvokeAsync(temp))">
-            <input type='text' name='username' placeholder='Username' class='container__inputField' @bind-value=temp.Username>
-            <input type='password' name='password' placeholder='Password' class='container__inputField'@bind-value=temp.Password>
-            <input type='submit'  value='Login' class='container__sumbitButton'>
-        </form>
+        
+        <EditForm Model="@temp" OnValidSubmit="@(e=>OnConferma.InvokeAsync(this.temp))">
+            <DataAnnotationsValidator />
+            <MudCard Style="background-color:transparent" Elevation="0">
+                
+                <MudCardContent>
+                    <MudTextField T="string"  Label="Username" Required="true" RequiredError="Inserire Username!" @bind-Value=temp.Username />
+                    <MudTextField T="string" InputType="InputType.Password" Required="true" RequiredError="Inserire Password!" Label="Password" @bind-Value=temp.Password></MudTextField>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="MudBlazor.Variant.Filled" Color=Color.Secondary Class="ml-auto">Register</MudButton>
+                </MudCardActions>
+            </MudCard>
+            
+            
+            
+        </EditForm>
+        
+        
+        
+        @*<form class='container__form' @onsubmit="@(e=>OnConferma.InvokeAsync(temp))">
+            <input type='text' name='username' placeholder='Username' class='container__inputField form-control form-control' @bind-value=temp.Username>
+            <label class="form-label"></label>
+            <input type='password' name='password' placeholder='Password' class='container__inputField form-control'@bind-value=temp.Password>
+            <label  class="form-label"></label>
+            <input type='submit'  value='Login' class='container__sumbitButton form-control'>
+            <label class="form-label"></label>
+        </form>*@
         
     </div>
 </div>
 
 @code{
+    MudTheme MyCustomTheme = new MudTheme()
+        {
+            Palette = new PaletteLight()
+            {
+                Primary = Colors.Yellow.Darken3,
+                Secondary = Colors.Orange.Darken4
+            }
+        };
+
     [Parameter]
     public LoginTemp temp { get; set; } = new LoginTemp("","");
 
-    
+    public string LoginError { get; set; }
 
     [Parameter]
     public EventCallback<LoginTemp> OnConferma { get; set; }

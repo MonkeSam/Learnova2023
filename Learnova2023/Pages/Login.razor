@@ -37,7 +37,7 @@
 
         string[]? role = await Http.GetFromJsonAsync<string[]>(GetRoleApi);
 
-        if (role[0] != "not_found")
+        if (role[0] != "not_Found")
         {
             StatoApp.Role = role[0];
             StatoApp.Username = temp.Username;
@@ -47,6 +47,8 @@
         }
         else
         {
+            //Gestione Password o Username
+            //chiedere a Spwitalers come passare un evento Padre-->Figlio
             
         }
 

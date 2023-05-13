@@ -13,6 +13,7 @@
             this.Username = user;
             this.SessionString = ss;
             this.Role = role;
+
         }
     }
 }
