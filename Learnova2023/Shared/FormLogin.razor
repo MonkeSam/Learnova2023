@@ -1,5 +1,10 @@
 ﻿@inject NavigationManager Navigation
-
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using MudBlazor
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 <div class='container d-flex  shadow-lg'>
     <div class='container__svgs d-none d-md-flex' style="background-color:@orangeDarken4">
         <div class="d-flex justify-content-center align-items-center mx-auto my-auto">
@@ -49,20 +54,31 @@
         
     </div>
     <div class='container__content justify-content-center align-items-center mx-auto my-auto'>
-        <form class='container__form' @onsubmit="@(e=>OnConferma.InvokeAsync(temp))">
-            <input type='text' name='username' placeholder='Username' class='container__inputField' @bind-value=temp.Username>
-            <input type='password' name='password' placeholder='Password' class='container__inputField'@bind-value=temp.Password>
-            <input type='submit'  value='Login' class='container__sumbitButton'>
-        </form>
+        
+        <MudForm ReadOnly=false>
+            <MudTextField T="string" Label="Username" Required="true" RequiredError="User name is required!" ReadOnly="true" />
+            <MudTextField T="string" InputType="InputType.Password" Required="true" RequiredError="Inserire Username!" Label="Password"></MudTextField>
+        </MudForm>
+        
+        
+        @*<form class='container__form' @onsubmit="@(e=>OnConferma.InvokeAsync(temp))">
+            <input type='text' name='username' placeholder='Username' class='container__inputField form-control form-control' @bind-value=temp.Username>
+            <label class="form-label"></label>
+            <input type='password' name='password' placeholder='Password' class='container__inputField form-control'@bind-value=temp.Password>
+            <label  class="form-label"></label>
+            <input type='submit'  value='Login' class='container__sumbitButton form-control'>
+            <label class="form-label"></label>
+        </form>*@
         
     </div>
 </div>
 
 @code{
+    MudForm form;
     [Parameter]
     public LoginTemp temp { get; set; } = new LoginTemp("","");
 
-    
+    public string LoginError { get; set; }
 
     [Parameter]
     public EventCallback<LoginTemp> OnConferma { get; set; }

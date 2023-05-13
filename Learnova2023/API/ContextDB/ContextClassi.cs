@@ -6,18 +6,21 @@ namespace Learnova2023.API.ContextDB
 {
     public class ContextClassi : ContextDB
     {
-        public static List<Classe> GetClassi()
+        public static List<Classe> GetClassi(string? sessionKey)
         {
             List<Classe> Classi = new List<Classe>();
-            string? query = "call Learnova5H.GetClassi();";
+            query = "GetClassi;";
 
             using (MySqlConnection con = new(ConnectionString))
             {
                 using (MySqlCommand cmd = new(query, con))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     if (con.State == ConnectionState.Closed)
                         con.Open();
-                    //cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("_sessionKey", sessionKey).Direction = ParameterDirection.Input;
+
                     MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
 
@@ -31,5 +34,44 @@ namespace Learnova2023.API.ContextDB
             }
             return Classi;
         }
+        public static void CreateClassi(Classe obj, string? sessionKey)
+        {
+            query = "CreateClasse";
+            using (MySqlConnection con = new(ConnectionString))
+            {
+                using (MySqlCommand cmd = new(query, con))
+                {
+                    if (con.State == ConnectionState.Closed)
+                        con.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("_annoClasse", obj.Anno).Direction = ParameterDirection.Input;
+                    cmd.Parameters.AddWithValue("_idSezione", obj.Sezione).Direction = ParameterDirection.Input;
+                    cmd.Parameters.AddWithValue("_idIndirizzo", obj.Indirizzo).Direction = ParameterDirection.Input;
+                    cmd.Parameters.AddWithValue("_sessionKey", sessionKey).Direction = ParameterDirection.Input;
+                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adp.Fill(dt);
+                }
+            }
+        }
+        public static void DeleteClassi(int idClasse, string sessionKey)
+        {
+            query = "DeleteClasse";
+            using (MySqlConnection con = new(ConnectionString))
+            {
+                using (MySqlCommand cmd = new(query, con))
+                {
+                    if (con.State == ConnectionState.Closed)
+                        con.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("idClasse", idClasse).Direction = ParameterDirection.Input;
+                    cmd.Parameters.AddWithValue("_sessionKey", sessionKey).Direction = ParameterDirection.Input;
+                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adp.Fill(dt);
+                }
+            }
+        }
     }
+
 }
