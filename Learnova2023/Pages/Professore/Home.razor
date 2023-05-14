@@ -3,7 +3,12 @@
 @inject StatoApp StatoApp 
 <h1>Professore</h1>
 
-
+<MudItem>
+    <MudForm ReadOnly=false>
+        <MudTextField T="string" Label="Username" Required="true" RequiredError="User name is required!" ReadOnly="true" />
+        <MudTextField T="string" InputType="InputType.Password" Required="true" RequiredError="Inserire Username!" Label="Password"></MudTextField>
+    </MudForm>
+</MudItem>
 
 @code{
     
