@@ -1,7 +1,25 @@
 ﻿@page "/Studente/Home"
+@inject IDialogService DialogService
+@using Shared.Classes
+@using MudBlazor
 
+<MudThemeProvider ></MudThemeProvider>
+<MudDialogProvider />
+<MudSnackbarProvider />
 <h3>Studente</h3>
 
-@code {
 
+
+<MudButton OnClick="ShowDialog">PRESS ME</MudButton>
+
+@code {
+    public Professore prof = new Professore("Maurizio", "Sintuzzi");
+    async Task ShowDialog()
+    {
+        MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
+        var Parameters = new DialogParameters();
+        
+
+        var dialog = DialogService.Show<DialogCompiti>("Conferma", Parameters);
+    }
 }
