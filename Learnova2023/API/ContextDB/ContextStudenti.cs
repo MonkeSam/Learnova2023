@@ -1,4 +1,7 @@
-﻿namespace Learnova2023.API.ContextDB
+﻿using Learnova2023.Shared.Classes;
+using MySql.Data.MySqlClient;
+using System.Data;
+namespace Learnova2023.API.ContextDB
 {
     public class ContextStudenti : ContextDB
     {

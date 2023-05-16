@@ -43,7 +43,12 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Success" Variant="MudBlazor.Variant.Filled" OnClick="Submit">Yes</MudButton>
+        @if (stato.Details.GetType() == typeof(Professore))
+        {
+            <MudButton Color="Color.Success" Variant="MudBlazor.Variant.Filled" OnClick="Submit">Yes</MudButton>
+        }
+        
+        
     </DialogActions>
 </MudDialog>
 @code {
@@ -64,7 +69,7 @@
     {
         await base.OnInitializedAsync();
         tmp = Compito;
-        if (stato.Role!="Studente")
+        if (stato.Details.GetType() == typeof(Professore))
         {
             Readonly = false;
         }

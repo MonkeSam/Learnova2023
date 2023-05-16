@@ -23,9 +23,6 @@
         {
             return $"{this.Nome} {this.Cognome}";
         }
-        public override string ToString()
-        {
-            return $"{this.Nome} {this.Cognome}";
-        }
+
     }
 }
