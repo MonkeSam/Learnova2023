@@ -6,11 +6,6 @@
 <MudThemeProvider Theme="MyCustomTheme" ></MudThemeProvider>
 <MudDialogProvider />
 <MudSnackbarProvider />
-<MudButton OnClick="ShowDialog">Dialog</MudButton>
-
-<MudThemeProvider ></MudThemeProvider>
-<MudDialogProvider />
-<MudSnackbarProvider />
 <h3>Studente</h3>
 
 
@@ -18,5 +13,23 @@
 <MudButton OnClick="ShowDialog">PRESS ME</MudButton>
 
 @code {
+    public Professore prof = new Professore("Maurizio", "Sintuzzi");
+    async Task ShowDialog()
+    {
+        MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
+        var Parameters = new DialogParameters();
 
+        Parameters.Add("stato",StatoApp);
+        Parameters.Add("Compito", new Compito(new DateTime(2023, 5, 1, 8, 30, 52), "Verifica", new Professore("Maurizio", "Sintuzzi"), "Sistemi e Reti", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddddddddddddddddddddddafffffffffffffffffffffffffffffaaa"));
+
+        var dialog = DialogService.Show<DialogCompiti>("Compito", Parameters);
+    }
+    MudTheme MyCustomTheme = new MudTheme()
+        {
+            Palette = new PaletteLight()
+            {
+                Primary = Colors.Yellow.Darken3,
+                Secondary = Colors.Orange.Darken4
+            }
+        };
 }

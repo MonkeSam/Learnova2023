@@ -3,10 +3,9 @@
 
 <MudDialog Class=" justify-content-center align-items-center mx-auto my-auto">
 
-<MudDialog>
     <DialogContent>
         <MudCard Class="w-100 h-100">
-            <EditForm Model="@tmp" >
+            <EditForm Model="@Compito" >
                 <DataAnnotationsValidator />
                                                  
                 <MudCardContent Style="overflow-y:scroll">
@@ -16,14 +15,14 @@
                         <MudItem xs="6" >
                                 
                             <MudTextField Label="Professore" AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=Readonly Text=@tmp.Professore.ToString()></MudTextField>
-                            <MudTextField Label="Materia" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly @bind-Value=@tmp.Materia></MudTextField>
+                            <MudTextField Label="Materia" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=true @bind-Value=@tmp.Materia></MudTextField>
                                 
                         </MudItem>
 
           
                         <MudItem xs="6" >
                             <MudTextField Variant="MudBlazor.Variant.Filled" T="string" @bind-Value=@tmp.Tipo ReadOnly=Readonly></MudTextField>
-                            <MudDatePicker Label="Data" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly @bind-Value=@tmp.Date></MudDatePicker>
+                            <MudDatePicker Label="Data" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly Value=@tmp.Date.ToShortDateString()></MudDatePicker>
                                 
                         </MudItem>
                         <MudItem >
@@ -43,6 +42,8 @@
         
     </DialogContent>
     <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" Variant="MudBlazor.Variant.Filled" OnClick="Submit">Yes</MudButton>
     </DialogActions>
 </MudDialog>
 @code {
@@ -63,7 +64,7 @@
     {
         await base.OnInitializedAsync();
         tmp = Compito;
-        if (stato.Details.GetType()!=typeof(Studente))
+        if (stato.Role!="Studente")
         {
             Readonly = false;
         }
