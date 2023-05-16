@@ -2,6 +2,11 @@
 @inject IDialogService DialogService
 @using Shared.Classes
 @using MudBlazor
+@inject StatoApp StatoApp
+<MudThemeProvider Theme="MyCustomTheme" ></MudThemeProvider>
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudButton OnClick="ShowDialog">Dialog</MudButton>
 
 <MudThemeProvider ></MudThemeProvider>
 <MudDialogProvider />
@@ -13,13 +18,5 @@
 <MudButton OnClick="ShowDialog">PRESS ME</MudButton>
 
 @code {
-    public Professore prof = new Professore("Maurizio", "Sintuzzi");
-    async Task ShowDialog()
-    {
-        MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
-        var Parameters = new DialogParameters();
-        
 
-        var dialog = DialogService.Show<DialogCompiti>("Conferma", Parameters);
-    }
 }

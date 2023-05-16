@@ -4,6 +4,8 @@
     {
         public int Stipendio { get; set; }
 
+        public Professore() { }
+
         public Professore(string n, string c) : base(n, c)
         {
             this.Nome = n;
@@ -15,12 +17,11 @@
 
         public Professore(int id, string nome, string cognome, string user, int stipendio) : base(id, nome, cognome, user)
         {
-            this.Nome = nome;
-            this.Cognome = cognome;
             this.Stipendio = stipendio;
-            this.User = user;
-
-
+        }
+        public override string ToString()
+        {
+            return $"{this.Nome} {this.Cognome}";
         }
     }
 }

@@ -6,13 +6,13 @@
 
         public string SessionString { get; set; }
 
-        public string Role { get; set; }
+        public dynamic Details { get; set; }
 
-        public void SetSession(string user, string ss, string role)
+        public void SetSession(string user, string ss, dynamic d)
         {
             this.Username = user;
             this.SessionString = ss;
-            this.Role = role;
+            this.Details = d;
 
         }
     }

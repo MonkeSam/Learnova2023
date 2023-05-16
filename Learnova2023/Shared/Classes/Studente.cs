@@ -1,10 +1,13 @@
 ﻿namespace Learnova2023.Shared.Classes
 {
-    public class Studente:AbsUser
+    public class Studente : AbsUser
     {
-        public DateOnly DataDiNascita { get; set; }
-        public Classe?  Classe { get; set; }
-        public Studente(int id, string nome, string cognome, string user, DateOnly data, Classe classe):base(id,nome,cognome,user) 
+        public DateTime DataDiNascita { get; set; }
+        public int idClasse { get; set; }
+
+        public Studente() { }
+
+        public Studente(int id, string nome, string cognome, string user, DateTime data, int idClasse) : base(id, nome, cognome, user)
         {
             this.DataDiNascita = data;
             this.Classe = classe;

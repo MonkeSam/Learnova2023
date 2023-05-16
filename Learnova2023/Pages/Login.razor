@@ -2,7 +2,7 @@
 @inject NavigationManager Navigation
 @inject HttpClient Http
 @inject StatoApp StatoApp
-
+@using Shared.Classes
 <!--
 - Single file SVG animation
 - * can be used as CSS backgroud
@@ -33,16 +33,28 @@
         string GetRoleApi = $"/api/Login/GetRole?username={temp.Username}&passwd={temp.Password}";
 
 
-
+        
 
         string[]? role = await Http.GetFromJsonAsync<string[]>(GetRoleApi);
 
         if (role[0] != "not_Found")
         {
-            StatoApp.Role = role[0];
+            
+            //StatoApp.Role = role[0];
             StatoApp.Username = temp.Username;
             StatoApp.SessionString = role[1];
-            //Navigation.NavigateTo($"/{role}/Home/{StatoApp.SessionString}");
+            string GetDettails = $"/api/{role[0]}/Get{role[0]}ByUsername?username={temp.Username}&sk={StatoApp.SessionString}";
+
+            if (role[0] == "Professore")
+            {
+                StatoApp.Details = await Http.GetFromJsonAsync<Shared.Classes.Professore>(GetDettails);
+            }
+            else
+            {
+                StatoApp.Details = await Http.GetFromJsonAsync<Shared.Classes.Studente>(GetDettails);
+            }
+
+            
             Navigation.NavigateTo($"/{role[0]}/Home");
         }
         else
