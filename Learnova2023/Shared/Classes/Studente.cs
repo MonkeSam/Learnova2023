@@ -1,7 +1,7 @@
 ﻿
 namespace Learnova2023.Shared.Classes
 {
-    public class Studente : AbsUser
+    public class Studente : AbsUser, IEquatable<Studente>
     {
         public DateTime DataDiNascita { get; set; }
         public int idClasse { get; set; }
@@ -12,6 +12,11 @@ namespace Learnova2023.Shared.Classes
         {
             this.DataDiNascita = data;
             this.idClasse = idClasse;
+        }
+
+        public bool Equals(Studente? s)
+        {
+            return this.Id == s.Id;
         }
     }
 }

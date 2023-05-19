@@ -2,6 +2,8 @@
 @inject NavigationManager Navigation
 @inject StatoApp StatoApp
 
+@*@if (!render) return;*@
+
 <RadzenLayout style="height: 100%">
     <RadzenHeader Style=@($"background-color:{Colors.Orange.Darken4}") >
         
@@ -84,8 +86,19 @@
 </style>
 
 @code {
+    //bool render = false;
     bool sidebar1Expanded = true;
-    
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    if(StatoApp.SessionString == null)
+    //    {
+    //        Navigation.NavigateTo("/");
+    //        return;
+    //    }
+    //    render = true;
+
+    //}
 
     public void Nav(MenuItemEventArgs e)
     {

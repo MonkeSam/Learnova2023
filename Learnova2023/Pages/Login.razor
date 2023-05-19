@@ -2,6 +2,7 @@
 @inject NavigationManager Navigation
 @inject HttpClient Http
 @inject StatoApp StatoApp
+@layout EmptyLayout
 @using Shared.Classes
 <!--
 - Single file SVG animation
@@ -25,14 +26,15 @@
 
 
 @code{
-
+    protected override async Task OnInitializedAsync()
+    {
+        StatoApp.Details = new Shared.Classes.Professore(1,"Maurizio", "Sintuzzi","cizio",1200);
+    }
 
     public  async Task GetAccess(LoginTemp temp)
     {
 
         string GetRoleApi = $"/api/Login/GetRole?username={temp.Username}&passwd={temp.Password}";
-
-
         
 
         string[]? role = await Http.GetFromJsonAsync<string[]>(GetRoleApi);

@@ -1,6 +1,6 @@
 ﻿namespace Learnova2023.Shared.Classes
 {
-    public class Professore : AbsUser
+    public class Professore : AbsUser, IEquatable<Professore>
     {
         public int Stipendio { get; set; }
 
@@ -24,5 +24,9 @@
             return $"{this.Nome} {this.Cognome}";
         }
 
+        public bool Equals(Professore? p)
+        {
+            return this.Id == p.Id;
+        }
     }
 }

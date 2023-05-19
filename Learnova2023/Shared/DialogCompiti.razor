@@ -14,22 +14,27 @@
                     <MudGrid>
                         <MudItem xs="6" >
                                 
-                            <MudTextField Label="Professore" AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=Readonly Text=@tmp.Professore.ToString()></MudTextField>
-                            <MudTextField Label="Materia" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=true @bind-Value=@tmp.Materia></MudTextField>
+                            <MudTextField Label="Professore" AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=true Text=@tmp.Professore.ToString()></MudTextField>
+                            <MudSelect Label="Materia" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly @bind-Value=@tmp.Materia>
+                                @foreach(string mat in ListaMaterie)
+                                {
+                                    <MudSelectItem T=string Value=@mat>@mat</MudSelectItem>
+                                }
+                            </MudSelect>
                                 
                         </MudItem>
 
           
                         <MudItem xs="6" >
                             <MudTextField Variant="MudBlazor.Variant.Filled" T="string" @bind-Value=@tmp.Tipo ReadOnly=Readonly></MudTextField>
-                            <MudDatePicker Label="Data" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly Value=@tmp.Date.ToShortDateString()></MudDatePicker>
+                            <MudDatePicker Label="Data" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly Date=@tmp.Date DateChanged="DataSpostata"></MudDatePicker>
                                 
                         </MudItem>
                         <MudItem >
                                 
                         </MudItem >
                         <MudItem xs="12">
-                            <MudTextField Label="Descrizione" Lines="5" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly @bind-Text=@Compito.Descrizione></MudTextField>
+                            <MudTextField Label="Descrizione" Lines="5" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly @bind-Text=@tmp.Descrizione></MudTextField>
                         </MudItem>
                             
                     </MudGrid>
@@ -63,18 +68,33 @@
 
     public Compito tmp { get; set; }
 
+    private List<string> ListaMaterie = new List<string> { "Tpsit", "Sistemi e Reti", "Storia", "Informatica", "Matematica" };
+
     public bool Readonly=true;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         tmp = Compito;
-        if (stato.Details.GetType() == typeof(Professore))
+        if(Compito.Professore != null)
         {
+            if (stato.Details.GetType() == typeof(Professore) && (stato.Details.Equals(Compito.Professore) == true))
+            {
+                Readonly = false;
+            }
+        }
+        else
+        {
+            tmp.Professore = stato.Details;
             Readonly = false;
         }
-    }
 
+    }
+    void DataSpostata(DateTime? dataScelta)
+    {
+        tmp.Date = dataScelta;
+    }
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
     void Cancel() => MudDialog.Cancel();
 }

@@ -13,14 +13,13 @@
 <MudButton OnClick="ShowDialog">PRESS ME</MudButton>
 
 @code {
-    public Professore prof = new Professore("Maurizio", "Sintuzzi");
     async Task ShowDialog()
     {
         MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
         var Parameters = new DialogParameters();
 
         Parameters.Add("stato",StatoApp);
-        Parameters.Add("Compito", new Compito(new DateTime(2023, 5, 1, 8, 30, 52), "Verifica", new Professore("Maurizio", "Sintuzzi"), "Sistemi e Reti", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddddddddddddddddddddddafffffffffffffffffffffffffffffaaa"));
+        Parameters.Add("Compito", new Compito(new DateTime(2023, 5, 1, 8, 30, 52), "Verifica", new Professore(1, "Maurizio", "Sintuzzi", "cizio", 1200), "Sistemi e Reti", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddddddddddddddddddddddafffffffffffffffffffffffffffffaaa"));
 
         var dialog = DialogService.Show<DialogCompiti>("Compito", Parameters);
     }
