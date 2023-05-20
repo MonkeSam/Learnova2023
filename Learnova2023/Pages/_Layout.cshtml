@@ -28,7 +28,12 @@
     </div>
     <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
     <script src="_framework/blazor.server.js"></script>
-
+    <script>
+        window.ChangeSlotColor = (i, check) => {
+            const el = document.querySelector(`.rz-slot[data-Id="${i}"] .rz-slot-title.rz-has-appointments`);
+            el.classList.add(check ? "bg-danger" : "bg-success");
+        }
+    </script>
 </body>
 </html>
 
