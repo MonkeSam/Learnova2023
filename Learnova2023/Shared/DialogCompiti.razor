@@ -12,8 +12,7 @@
                     
                     
                     <MudGrid>
-                        <MudItem xs="6" >
-                                
+                        <MudItem xs="6" >   
                             <MudTextField Label="Professore" AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=true Text=@tmp.Professore.ToString()></MudTextField>
                             <MudSelect Label="Materia" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly @bind-Value=@tmp.Materia>
                                 @foreach(string mat in ListaMaterie)
@@ -26,9 +25,14 @@
 
           
                         <MudItem xs="6" >
-                            <MudTextField Variant="MudBlazor.Variant.Filled" T="string" @bind-Value=@tmp.Tipo ReadOnly=Readonly></MudTextField>
-                            <MudDatePicker Label="Data" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly Date=@tmp.Date DateChanged="DataSpostata"></MudDatePicker>
-                                
+                            <MudSelect Label="Tipo" Variant="MudBlazor.Variant.Filled" T="string" @bind-Value=@tmp.Tipo ReadOnly=Readonly>
+                                @foreach (string tip in TipiCompiti)
+                                {
+                                    <MudSelectItem T=string Value=@tip>@tip</MudSelectItem>
+                                }
+                            </MudSelect>
+                            
+                            <MudDatePicker Label="Data" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly Date=@tmp.Date DateChanged="DataSpostata"></MudDatePicker>      
                         </MudItem>
                         <MudItem >
                                 
@@ -69,7 +73,7 @@
     public Compito tmp { get; set; }
 
     private List<string> ListaMaterie = new List<string> { "Tpsit", "Sistemi e Reti", "Storia", "Informatica", "Matematica" };
-
+    private string[] TipiCompiti = new string[2]{"Verifica","Interrogazione"};
     public bool Readonly=true;
 
     protected override async Task OnInitializedAsync()

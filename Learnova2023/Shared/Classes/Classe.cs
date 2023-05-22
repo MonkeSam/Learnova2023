@@ -15,6 +15,10 @@
             this.Sezione = sezione;
             this.Indirizzo= indirizzo;
         }
+        public string RitornaClasse()
+        {
+            return $"{Anno} {Sezione}";
+        }
         public override string ToString()
         {
             return $"{Anno} {Sezione} {Indirizzo}" ;
