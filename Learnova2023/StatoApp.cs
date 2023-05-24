@@ -4,7 +4,7 @@
     {
         public string? Username { get; set; }
 
-        public string? SessionString { get; set; }
+        public string SessionString { get; set; }
 
         public dynamic Details { get; set; }
 

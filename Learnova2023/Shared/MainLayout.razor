@@ -10,7 +10,7 @@
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="0">
             
             <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
-            <RadzenLabel Text=@(($"Benvenuto {StatoApp.Username}!").ToUpper()) />
+            <RadzenLabel Text=@(($"Benvenuto {StatoApp.Username}").ToUpper()) />
             <div class="d-flex justify-content-end align-items-end w-100">
                 <div class='container__svgs ' style=@($"width:min-content")>
                     <div class="my-auto">
@@ -64,9 +64,10 @@
         </RadzenStack>
     </RadzenHeader>
     <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
-        <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Home" Icon="home" Style="background-color:var(--mud-palette-success)" Click=Nav />
-            <RadzenPanelMenuItem Text="Calendario" Icon="event" Click=Nav />
+        <RadzenPanelMenu Match="NavLinkMatch.Prefix">
+            <RadzenPanelMenuItem Text="Home" Icon="home"  Path=@($"{StatoApp.Details.GetType().Name}/Home") />
+            <RadzenPanelMenuItem Text="Calendario" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Calendario") />
+            <RadzenPanelMenuItem Text="Classi" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Classi") />
         </RadzenPanelMenu>
         <div class="rz-p-4">
             
@@ -100,11 +101,6 @@
 
     //}
 
-    public void Nav(MenuItemEventArgs e)
-    {
-        
-        //Navigation.NavigateTo($"/Professore/{e.Text}/{StatoApp.SessionString}");
-        //Navigation.NavigateTo($"/{StatoApp.Role}/{e.Text}");
-    }
+   
 
 }

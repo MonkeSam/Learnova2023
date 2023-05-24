@@ -1,0 +1,43 @@
+﻿@inject StatoApp StatoApp
+@using Classes
+
+
+<div class="container-fluid d-flex justify-content-center align-items-center h-100">
+    <MudPaper Elevation="4" Class="w-100 m-5">
+        
+        <MudList Clickable=true>
+            @foreach (Classe c in Classi)
+            {
+
+                <MudListItem Href=@($"/{StatoApp.Details.GetType().Name}/Classe/{c.Id}")>
+                    <MudStack Row="true">
+                        <MudAvatar  Color="Color.Secondary">@($"{c.Anno}{c.Sezione}")</MudAvatar>
+                        <div class="d-flex justify-content-start align-items-center text w-100 fw-bold" >@c.Indirizzo</div>
+                            <MudIconButton Style="z-index:10" Class="justify-content-end align-items-end" Icon="@Icons.Material.Filled.CalendarMonth" Color="Color.Primary" Href=@($"/{StatoApp.Details.GetType().Name}/Calendario")>Calendario</MudIconButton>
+                    </MudStack>
+                    
+                </MudListItem>
+                <MudDivider DividerType="DividerType.Middle" Light="true"></MudDivider>
+            }
+        </MudList>
+    </MudPaper>
+    
+    
+    
+
+
+</div>
+
+
+
+@code {
+    public List<Classe>? Classi;
+    protected override async Task OnInitializedAsync()
+    {
+        //Classi = await httpClient.GetFromJsonAsync<List<Classe>>("/api/Classi/GetClassi?sk=");
+        Classi = (new List<Classe> { new Classe(1, 1, 'A', "Informatica"), new Classe(2, 2, 'B', "Informatica"), new Classe(3, 4, 'A', "Informatica"), new Classe(4, 5, 'F', "Chimica"), new Classe(5, 3, 'F', "Chimica"), new Classe(6, 1, 'O', "Turismo"), new Classe(7, 2, 'I', "Classico"), new Classe(8, 1, 'I', "Classico"), new Classe(9, 1, 'L', "Linguistico"), new Classe(10, 5, 'L', "Linguistico"), new Classe(11, 1, 'D', "Alberghiero") });
+        Classi.OrderBy(x => x.Sezione);
+
+    }
+    
+}

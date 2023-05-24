@@ -28,7 +28,8 @@
 @code{
     protected override async Task OnInitializedAsync()
     {
-        StatoApp.Details = new Shared.Classes.Professore(1,"Maurizio", "Sintuzzi","cizio",1200);
+        StatoApp.SessionString = "FateFintaDiAvereUnEsameTraUnMese";
+        StatoApp.Details = new Shared.Classes.Professore(1, "Maurizio", "Sintuzzi", "cizio", 1200);
     }
 
     public  async Task GetAccess(LoginTemp temp)
