@@ -11,8 +11,8 @@
 <RadzenTooltip />
 
 
-<RadzenScheduler Style="height : 100%" @ref="scheduler" LoadData=@LoadAssenze SlotRender="@OnSlotRender" Data="@Frequenza" TItem="DataItem" StartProperty="Periodo" EndProperty="Periodo" TextProperty="Text">
-    <RadzenYearView />
+<RadzenScheduler TodayText="Oggi" Style="height : 100%" @ref="scheduler" LoadData=@LoadAssenze SlotRender="@OnSlotRender" Data="@Frequenza" TItem="DataItem" StartProperty="Periodo" EndProperty="Periodo" TextProperty="Text">
+    <RadzenYearView Text="Anno" />
 </RadzenScheduler>
 
 <style>
@@ -32,13 +32,13 @@
     public RadzenScheduler<DataItem> scheduler;
     List<DataItem> AssenzeStud = new List<DataItem>()
     {
-        new DataItem{Periodo = new DateTime(2023, 5, 1, 8, 30, 52), Text="Assente" },
-        new DataItem{Periodo = new DateTime(2023, 5, 2, 8, 30, 52), Text="Assente" },
-        new DataItem{Periodo = new DateTime(2023, 5, 19, 8, 30, 52), Text="Assente" },
-        new DataItem{Periodo = new DateTime(2022, 11, 11, 8, 30, 52), Text="Assente" },
-        new DataItem{Periodo = new DateTime(2022, 11, 12, 8, 30, 52), Text="Assente" },
-        new DataItem{Periodo = new DateTime(2022, 12, 22, 8, 30, 52), Text="Assente" },
-        new DataItem{Periodo = new DateTime(2023, 4, 23, 8, 30, 52), Text="Assente" }
+        //new DataItem{Periodo = new DateTime(2023, 5, 1, 8, 30, 52), Text="Assente" },
+        //new DataItem{Periodo = new DateTime(2023, 5, 2, 8, 30, 52), Text="Assente" },
+        //new DataItem{Periodo = new DateTime(2023, 5, 19, 8, 30, 52), Text="Assente" },
+        //new DataItem{Periodo = new DateTime(2022, 11, 11, 8, 30, 52), Text="Assente" },
+        //new DataItem{Periodo = new DateTime(2022, 11, 12, 8, 30, 52), Text="Assente" },
+        //new DataItem{Periodo = new DateTime(2022, 12, 22, 8, 30, 52), Text="Assente" },
+        //new DataItem{Periodo = new DateTime(2023, 4, 23, 8, 30, 52), Text="Assente" }
     };
     List<DataItem> Frequenza = new List<DataItem>();
     List<SchedulerSlotRenderEventArgs> SlotRen = new List<SchedulerSlotRenderEventArgs>();
@@ -76,9 +76,10 @@
 
     public async Task LoadAssenze(SchedulerLoadDataEventArgs args)
     {
-
-        //string api = $"/api/Assenze/GetAssenze?idStudente={StatoApp.Details.Id}&sk={StatoApp.SessionString}";
-        //AssenzeStud = await Http.GetAsyncFromJson<DateTime>()
+        List<DateTime> tmp = new List<DateTime>();
+        string api = $"/api/Assenze/GetAssenze?idStudente={StatoApp.Details.Id}&sk={StatoApp.SessionString}";
+        tmp = await Http.GetFromJsonAsync<List<DateTime>>(api);
+        tmp.ForEach(x => AssenzeStud.Add(new DataItem { Periodo = x, Text = "Assente" }));
     }
 
 }
