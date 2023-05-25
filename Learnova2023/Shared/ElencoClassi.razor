@@ -31,11 +31,12 @@
 
 
 @code {
-    public List<Classe>? Classi;
+    [Parameter]
+    public List<Classe> Classi { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        //Classi = await httpClient.GetFromJsonAsync<List<Classe>>("/api/Classi/GetClassi?sk=");
-        Classi = (new List<Classe> { new Classe(1, 1, 'A', "Informatica"), new Classe(2, 2, 'B', "Informatica"), new Classe(3, 4, 'A', "Informatica"), new Classe(4, 5, 'F', "Chimica"), new Classe(5, 3, 'F', "Chimica"), new Classe(6, 1, 'O', "Turismo"), new Classe(7, 2, 'I', "Classico"), new Classe(8, 1, 'I', "Classico"), new Classe(9, 1, 'L', "Linguistico"), new Classe(10, 5, 'L', "Linguistico"), new Classe(11, 1, 'D', "Alberghiero") });
+        
+        //Classi = (new List<Classe> { new Classe(1, 1, 'A', "Informatica"), new Classe(2, 2, 'B', "Informatica"), new Classe(3, 4, 'A', "Informatica"), new Classe(4, 5, 'F', "Chimica"), new Classe(5, 3, 'F', "Chimica"), new Classe(6, 1, 'O', "Turismo"), new Classe(7, 2, 'I', "Classico"), new Classe(8, 1, 'I', "Classico"), new Classe(9, 1, 'L', "Linguistico"), new Classe(10, 5, 'L', "Linguistico"), new Classe(11, 1, 'D', "Alberghiero") });
         Classi.OrderBy(x => x.Sezione);
 
     }

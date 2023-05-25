@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject StatoApp StatoApp
-
-@if (StatoApp.SessionString!=null)
+@inject NavigationManager NavigationManager
+@if (StatoApp.SessionString!=null && NavigationManager.Uri!=$"{NavigationManager.BaseUri}")
 {
     <RadzenLayout style="height: 100%" >
         <RadzenHeader Style=@($"background-color:{Colors.Orange.Darken4}")>
@@ -64,6 +64,10 @@
             </div>
         </RadzenBody>
     </RadzenLayout>
+}
+else
+{
+    <main>@Body</main>
 }
 
 

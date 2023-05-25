@@ -1,11 +1,19 @@
 ﻿@page "/Professore/Home"
 @layout EmptyLayout
 @inject StatoApp StatoApp
+@inject HttpClient Http
+@using Shared.Classes
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<ElencoClassi></ElencoClassi>
+<ElencoClassi Classi=@Classi></ElencoClassi>
 @code {
-    
+    public List<Classe> Classi=new List<Classe>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        string api = $"/api/Classi/GetClassi?sk={StatoApp.SessionString}";
+        Classi = await Http.GetFromJsonAsync<List<Classe>>(api);
+    }
 }
