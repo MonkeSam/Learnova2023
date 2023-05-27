@@ -1,0 +1,17 @@
+﻿@page "/Professore/Classe/{classePassata}"
+@using MudBlazor
+@using Shared.Classes
+@inject HttpClient Http
+@inject StatoApp StatoApp
+@inject ISnackbar Snackbar
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<ElencoStudenti></ElencoStudenti>
+
+@code
+{
+	[Parameter]
+	public string classePassata { get; set; }
+}

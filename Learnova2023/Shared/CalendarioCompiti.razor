@@ -1,0 +1,102 @@
+﻿@inject MudBlazor.DialogService DialogService
+@inject HttpClient Http
+@inject StatoApp StatoApp
+@inject IDialogService DialogService
+@using Radzen
+@using Radzen.Blazor
+@using Radzen.Blazor.Rendering
+@using Shared.Classes;
+<MudThemeProvider Theme="MyCustomTheme"></MudThemeProvider>
+<MudDialogProvider />
+<RadzenDialog />
+<RadzenContextMenu />
+<RadzenTooltip />
+
+
+<RadzenScheduler Class="h-100"  @ref="scheduler"  LoadData=@LoadData SlotSelect=@OnSlotSelect AppointmentRender="@OnAppointmentRender"  AppointmentSelect="@OnAppointmentSelect" Data="@Compiti" TItem="Compito" StartProperty="Date" EndProperty="Date" TextProperty="Descrizione">
+    <RadzenMonthView />
+</RadzenScheduler>
+
+<style>
+    .rz-scheduler-nav-views .rz-button.rz-primary.rz-state-active {
+        color: @Colors.Orange.Darken3 !important;
+        background-color: @Colors.Amber.Lighten4 !important
+    }
+
+</style>
+
+
+@code {
+    [Parameter]
+    public int IdClasse { get; set; }
+
+    public RadzenScheduler<Compito> scheduler;
+    List<Compito> Compiti = new List<Compito>();
+
+
+    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+    {
+        if(StatoApp.Details.GetType().Name!="Studente")
+        {
+            MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
+            var Parameters = new DialogParameters();
+            Compito data = new Compito();
+            Parameters.Add("stato", StatoApp);
+            Parameters.Add("Compito", data);
+            var dialog = await DialogService.ShowAsync<DialogCompiti>("Compito", Parameters);
+
+            if (data != null)
+            {
+                Compiti.Add(data);
+                await dialog.Result;
+                await scheduler.Reload();
+            }
+        }
+    }
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Compito> args)
+    {
+        switch (args.Data.Tipo)
+        {
+            case "Verifica":
+                args.Attributes["style"] = $"background:{Colors.Orange.Darken4}";
+                break;
+
+            case "Interrogazione":
+                args.Attributes["style"] = $"background:{Colors.Yellow.Darken2}";
+                break;
+            case "Compito":
+                args.Attributes["style"] = $"background:{Colors.Amber.Lighten2}";
+                break;
+
+        }
+    }
+
+    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Compito> args)
+    {
+        MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
+        var Parameters = new DialogParameters();
+
+        Parameters.Add("stato", StatoApp);
+        Parameters.Add("Compito", args.Data);
+
+        var dialog = await DialogService.ShowAsync<DialogCompiti>("Compito", Parameters);
+        await dialog.Result;
+        await scheduler.Reload();
+    }
+
+    public async Task LoadData(SchedulerLoadDataEventArgs args)
+    {
+
+        string api = $"/api/Compiti/GetCompiti?idClasse={IdClasse}&sk={StatoApp.SessionString}";
+        Compiti = await Http.GetFromJsonAsync<List<Compito>>(api);
+    }
+    MudTheme MyCustomTheme = new MudTheme()
+        {
+            Palette = new PaletteLight()
+            {
+                Primary = Colors.Yellow.Darken3,
+                Secondary = Colors.Orange.Darken4
+            }
+        };
+
+}

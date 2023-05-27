@@ -30,7 +30,7 @@ namespace Learnova2023.API.ContextDB
 
                     foreach (DataRow r in dt.Rows)
                     {
-                        Compiti.Add(new Compito(Convert.ToDateTime(r[0]), Convert.ToString(r[1]), new Professore(Convert.ToString(r[2]), Convert.ToString(r[3])), Convert.ToString(r[4]), Convert.ToString(5)));
+                        Compiti.Add(new Compito(Convert.ToDateTime(r[0]), Convert.ToString(r[1]), new Professore(Convert.ToString(r[2]), Convert.ToString(r[3])), Convert.ToString(r[4]), Convert.ToString(r[5])));
                     }
                 }
             }

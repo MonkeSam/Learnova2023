@@ -1,4 +1,4 @@
-﻿@page "/Studente/PaginaAssenze"
+﻿@page "/Studente/Assenze"
 @using Shared.Classes
 @using Radzen
 @using Radzen.Blazor
@@ -11,7 +11,7 @@
 <RadzenTooltip />
 
 
-<RadzenScheduler TodayText="Oggi" Style="height : 100%" @ref="scheduler" LoadData=@LoadAssenze SlotRender="@OnSlotRender" Data="@Frequenza" TItem="DataItem" StartProperty="Periodo" EndProperty="Periodo" TextProperty="Text">
+<RadzenScheduler TodayText="Oggi" Class="h-100" @ref="scheduler" LoadData=@LoadAssenze SlotRender="@OnSlotRender" Data="@Frequenza" TItem="DataItem" StartProperty="Periodo" EndProperty="Periodo" TextProperty="Text">
     <RadzenYearView Text="Anno" />
 </RadzenScheduler>
 

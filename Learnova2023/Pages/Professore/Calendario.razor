@@ -1,4 +1,4 @@
-﻿@page "/Professore/Calendario"
+﻿@page "/Professore/Calendario/{ClassePassata}"
 @inject MudBlazor.DialogService DialogService
 @inject HttpClient Http
 @inject StatoApp StatoApp
@@ -7,81 +7,21 @@
 @using Radzen.Blazor
 @using Radzen.Blazor.Rendering
 @using Shared.Classes;
-<MudThemeProvider Theme="MyCustomTheme"></MudThemeProvider>
-<MudDialogProvider />
+
+
 <RadzenDialog />
 <RadzenContextMenu />
 <RadzenTooltip />
 
 
-<RadzenScheduler @ref="scheduler" LoadData=@LoadData SlotSelect=@OnSlotSelect AppointmentSelect="@OnAppointmentSelect" Data="@Compiti" TItem="Compito" StartProperty="Date" EndProperty="Date" TextProperty="Descrizione" >
-    <RadzenMonthView />
-</RadzenScheduler>
+<CalendarioCompiti IdClasse="Convert.ToInt32(ClassePassata)"></CalendarioCompiti>
 
-<style>
-    .rz-scheduler-nav-views .rz-button.rz-primary.rz-state-active {
-        color: @Colors.Orange.Darken3 !important;
-        background-color: @Colors.Amber.Lighten4 !important
-    }
 
-</style>
 
 
 @code {
-    public RadzenScheduler<Compito> scheduler;
-    List<Compito> Compiti = new List<Compito>()
-    {
-        new Compito(new DateTime(2023, 5, 1, 8, 30, 52),"Verifica",new Professore(1, "Maurizio", "Sintuzzi", "cizio", 1200),"Sistemi e Reti","aaaaaaa"),
-        new Compito(new DateTime(2023, 5, 1, 8, 30, 52),"Verifica",new Professore("Maurizio","Sintuzzi"),"Matematica","bbbbbbb"),
-        new Compito(new DateTime(2023, 5, 1, 8, 30, 52),"Verifica",new Professore("Maurizio","Sintuzzi"),"Informatica","ccccccc"),
-        new Compito(new DateTime(2023, 5, 1, 8, 30, 52),"Verifica",new Professore("Maurizio","Sintuzzi"),"TPSIT","ddddddd")
-    };
-
-    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
-    {
-        MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
-        var Parameters = new DialogParameters();
-        Compito data = new Compito();
-        Parameters.Add("stato", StatoApp);
-        Parameters.Add("Compito", data);
-        var dialog = await DialogService.ShowAsync<DialogCompiti>("Compito", Parameters);
-
-        if (data != null)
-        {
-            Compiti.Add(data);
-            await dialog.Result;
-            await scheduler.Reload();
-        }  
-    }
-
-    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Compito> args)
-    {
-        MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
-        var Parameters = new DialogParameters();
-
-        Parameters.Add("stato", StatoApp);
-        Parameters.Add("Compito", args.Data);
-
-        var dialog = await DialogService.ShowAsync<DialogCompiti>("Compito", Parameters);
-        await dialog.Result;
-        await scheduler.Reload();
-    }
-
-    public async Task LoadData(SchedulerLoadDataEventArgs args)
-    {
-        
-        //string api = $"/api/Login/GetCompiti?idClasse={}&Sessionkey={StatoApp.SessionString}";
-        //Compiti = await Http.GetAsyncFromJson<Compito>()
-    }
-    MudTheme MyCustomTheme = new MudTheme()
-        {
-            Palette = new PaletteLight()
-            {
-                Primary = Colors.Yellow.Darken3,
-                Secondary = Colors.Orange.Darken4
-            }
-        };
-
+    [Parameter]
+    public string ClassePassata { get; set; }
 }
 
 

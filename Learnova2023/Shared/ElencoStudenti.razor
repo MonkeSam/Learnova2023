@@ -4,41 +4,39 @@
 
 <div class="container-fluid d-flex justify-content-center align-items-center h-100">
     <MudPaper Elevation="4" Class="w-100 m-5">
-        
+
         <MudList Clickable=true>
-            @foreach (Classe c in Classi)
+            @foreach (Studente c in Studenti)
             {
 
-                <MudListItem Href=@($"/{StatoApp.Details.GetType().Name}/Calendario/{c.Id}")>
+                <MudListItem Href=@($"/{StatoApp.Details.GetType().Name}/Classe/{c.IdClasse}")>
                     <MudStack Row="true">
-                        <MudAvatar  Color="Color.Secondary">@($"{c.Anno}{c.Sezione}")</MudAvatar>
-                        <div class="d-flex justify-content-start align-items-center text w-100 fw-bold" >@c.Indirizzo</div>
+                        <MudAvatar Color="Color.Secondary">@($"{c.Nome[0]}{c.Cognome[0]}")</MudAvatar>
+                            <div class="d-flex justify-content-start align-items-center text w-100 fw-bold">@($"{c.Nome} {c.Cognome}") </div>
+                        <div class="d-flex justify-content-end align-items-end text w-100">@($"{c.DataDiNascita.Date}") </div>
                             <MudIconButton Style="z-index:10" Class="justify-content-end align-items-end" Icon="@Icons.Material.Filled.CalendarMonth" Color="Color.Primary" Href=@($"/{StatoApp.Details.GetType().Name}/Calendario")>Calendario</MudIconButton>
-                    </MudStack>
-                    
-                </MudListItem>
+                        </MudStack>
+                    </MudListItem>
                 <MudDivider DividerType="DividerType.Middle" Light="true"></MudDivider>
             }
         </MudList>
     </MudPaper>
-    
-    
-    
+
+
+
 
 
 </div>
 
-
-
 @code {
     [Parameter]
-    public List<Classe> Classi { get; set; }
+    public List<Studente> Studenti { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        
+
         //Classi = (new List<Classe> { new Classe(1, 1, 'A', "Informatica"), new Classe(2, 2, 'B', "Informatica"), new Classe(3, 4, 'A', "Informatica"), new Classe(4, 5, 'F', "Chimica"), new Classe(5, 3, 'F', "Chimica"), new Classe(6, 1, 'O', "Turismo"), new Classe(7, 2, 'I', "Classico"), new Classe(8, 1, 'I', "Classico"), new Classe(9, 1, 'L', "Linguistico"), new Classe(10, 5, 'L', "Linguistico"), new Classe(11, 1, 'D', "Alberghiero") });
-        Classi.OrderBy(x => x.Sezione);
+        Studenti.OrderBy(x => x.Cognome);
 
     }
-    
+
 }

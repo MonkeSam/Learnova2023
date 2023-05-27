@@ -3,32 +3,15 @@
 @using Shared.Classes
 @using MudBlazor
 @inject StatoApp StatoApp
-<MudThemeProvider Theme="MyCustomTheme" ></MudThemeProvider>
-<MudDialogProvider />
+
+
 <MudSnackbarProvider />
-<h3>Studente</h3>
 
 
 
-<MudButton OnClick="ShowDialog">PRESS ME</MudButton>
+<CalendarioCompiti IdClasse="StatoApp.Details.IdClasse"></CalendarioCompiti>
 
 @code {
-    async Task ShowDialog()
-    {
-        MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
-        var Parameters = new DialogParameters();
-
-        Parameters.Add("stato",StatoApp);
-        Parameters.Add("Compito", new Compito(new DateTime(2023, 5, 1, 8, 30, 52), "Verifica", new Professore(1, "Maurizio", "Sintuzzi", "cizio", 1200), "Sistemi e Reti", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddddddddddddddddddddddafffffffffffffffffffffffffffffaaa"));
-
-        var dialog = DialogService.Show<DialogCompiti>("Compito", Parameters);
-    }
-    MudTheme MyCustomTheme = new MudTheme()
-        {
-            Palette = new PaletteLight()
-            {
-                Primary = Colors.Yellow.Darken3,
-                Secondary = Colors.Orange.Darken4
-            }
-        };
+    
+    
 }

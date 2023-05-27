@@ -1,5 +1,6 @@
 ﻿
 @using Shared.Classes
+@inject HttpClient Http
 
 <MudDialog Class=" justify-content-center align-items-center mx-auto my-auto">
 
@@ -15,9 +16,9 @@
                         <MudItem xs="6" >   
                             <MudTextField Label="Professore" AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=true Text=@tmp.Professore.ToString()></MudTextField>
                             <MudSelect Label="Materia" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly @bind-Value=@tmp.Materia>
-                                @foreach(string mat in ListaMaterie)
+                                @foreach(Materia mat in ListaMaterie)
                                 {
-                                    <MudSelectItem T=string Value=@mat>@mat</MudSelectItem>
+                                    <MudSelectItem T=string Value=@mat.Nome>@mat.Nome</MudSelectItem>
                                 }
                             </MudSelect>
                                 
@@ -72,13 +73,13 @@
 
     public Compito tmp { get; set; }
 
-    private List<string> ListaMaterie = new List<string> { "Tpsit", "Sistemi e Reti", "Storia", "Informatica", "Matematica" };
-    private string[] TipiCompiti = new string[2]{"Verifica","Interrogazione"};
+    private List<Materia> ListaMaterie = new List<Materia>();
+    private string[] TipiCompiti = new string[3]{"Verifica","Interrogazione","Compito"};
     public bool Readonly=true;
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
+
         tmp = Compito;
         if(Compito.Professore != null)
         {
@@ -92,7 +93,8 @@
             tmp.Professore = stato.Details;
             Readonly = false;
         }
-
+        string api = $"/api/Materia/GetMaterie?sk={stato.SessionString}";
+        ListaMaterie = await Http.GetFromJsonAsync<List<Materia>>(api);
     }
     void DataSpostata(DateTime? dataScelta)
     {

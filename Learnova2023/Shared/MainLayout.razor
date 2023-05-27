@@ -65,9 +65,23 @@
     </RadzenHeader>
     <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
         <RadzenPanelMenu Match="NavLinkMatch.Prefix">
-            <RadzenPanelMenuItem Text="Home" Icon="home"  Path=@($"{StatoApp.Details.GetType().Name}/Home") />
-            <RadzenPanelMenuItem Text="Calendario" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Calendario") />
-            <RadzenPanelMenuItem Text="Classi" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Classi") />
+            @if (StatoApp.Details.GetType().Name == "Studente")
+            {
+                <RadzenPanelMenuItem Text="Home" Icon="home" Path=@($"{StatoApp.Details.GetType().Name}/Home") />
+    
+                <RadzenPanelMenuItem Text="Voti" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Classi") />
+                <RadzenPanelMenuItem Text="Note" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Classi") />
+                <RadzenPanelMenuItem Text="Assenze" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Assenze") />
+            }
+            else
+            {
+                <RadzenPanelMenuItem Text="Home" Icon="home" Path=@($"{StatoApp.Details.GetType().Name}/Home") />
+                <RadzenPanelMenuItem Text="Calendario" Icon="Calendar" Path=@($"{StatoApp.Details.GetType().Name}/Calendario") />
+                <RadzenPanelMenuItem Text="Studenti" Icon="Calendar" Path=@($"{StatoApp.Details.GetType().Name}/Classe/") />
+
+                
+            }
+
         </RadzenPanelMenu>
         <div class="rz-p-4">
             
