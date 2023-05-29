@@ -11,7 +11,7 @@
 -->
 
 <div class="vh-100 container-fluid d-flex justify-content-center align-items-center ">
-    <FormLogin OnConferma="GetAccess"  > </FormLogin>
+    <FormLogin OnConferma="GetAccess" error=error > </FormLogin>
     <div class="login position-absolute">
     
         <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
@@ -32,17 +32,19 @@
     //    StatoApp.Details = new Shared.Classes.Professore(1, "Maurizio", "Sintuzzi", "cizio", 1200);
     //}
 
+    public bool error = false;
+
     public  async Task GetAccess(LoginTemp temp)
     {
 
         string GetRoleApi = $"/api/Login/GetRole?username={temp.Username}&passwd={temp.Password}";
-        
+
 
         string[]? role = await Http.GetFromJsonAsync<string[]>(GetRoleApi);
 
         if (role[0] != "not_Found")
         {
-            
+
             //StatoApp.Role = role[0];
             StatoApp.Username = temp.Username;
             StatoApp.SessionString = role[1];
@@ -57,11 +59,12 @@
                 StatoApp.Details = await Http.GetFromJsonAsync<Shared.Classes.Studente>(GetDettails);
             }
 
-            
+
             Navigation.NavigateTo($"/{role[0]}/Home");
         }
         else
         {
+            error = true;
             //Gestione Password o Username
             //chiedere a Spwitalers come passare un evento Padre-->Figlio
             
