@@ -8,7 +8,7 @@
         <MudList Clickable=true>
             @foreach (Classe c in Classi)
             {
-
+                @*HREF ti manda ad una pagina ogni volta che si clicca, bisogna sostituire il tutto facendo il modo che si setti una variabile globale con l'id classe == a c.Id e poi utilizzare un Navigate to o altra roba*@
                 <MudListItem Href=@($"/{StatoApp.Details.GetType().Name}/Calendario/{c.Id}")>
                     <MudStack Row="true">
                         <MudAvatar  Color="Color.Secondary">@($"{c.Anno}{c.Sezione}")</MudAvatar>
