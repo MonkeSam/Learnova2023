@@ -1,4 +1,4 @@
-﻿@page "/Professore/Classe/{classePassata}"
+﻿@page "/Professore/Classe"
 @using MudBlazor
 @using Shared.Classes
 @inject HttpClient Http
@@ -11,10 +11,15 @@
 @*Concettualmente inesatto così com'è, per utilizzarlo bisognerebbe creare un altra pagina a cui passo il parametro classe passata. Esattamente come nella pagina calendario che apro calendario compiti ed elenco classi lo uso in home
 	Per utilizzare un componente diretto in questa pagina è necessario una variabile globale della classe
 *@
-<ElencoStudenti></ElencoStudenti>
+<ElencoStudenti Studenti="Students"></ElencoStudenti>
 
 @code
 {
-	[Parameter]
-	public string classePassata { get; set; }
+    public List<Studente> Students = new List<Studente>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        string api = $"/api/Studente/GetStudenti?idClasse={StatoApp.idClasse}&sk={StatoApp.SessionString}";
+        Students = await Http.GetFromJsonAsync<List<Studente>>(api);
+    }
 }
