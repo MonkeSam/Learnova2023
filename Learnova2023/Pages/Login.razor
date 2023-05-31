@@ -2,6 +2,7 @@
 @inject NavigationManager Navigation
 @inject HttpClient Http
 @inject StatoApp StatoApp
+@inject ISnackbar Snackbar
 @layout EmptyLayout
 @using Shared.Classes
 <!--
@@ -65,9 +66,8 @@
         else
         {
             error = true;
-            //Gestione Password o Username
-            //chiedere a Spwitalers come passare un evento Padre-->Figlio
-            
+            Snackbar.Add("Username o Password Errati!", Severity.Error);
+
         }
 
         

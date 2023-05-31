@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager Navigation
+
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 
@@ -55,13 +56,16 @@
     </div>
     <div class='container__content justify-content-center align-items-center mx-auto my-auto'>
         
-        <EditForm Model="@temp" OnValidSubmit="@(e=>OnConferma.InvokeAsync(this.temp))">
+        <EditForm Model="@temp" OnValidSubmit="@(e=>{
+                OnConferma.InvokeAsync(this.temp);
+                   
+            })">
             <DataAnnotationsValidator />
             <MudCard Style="background-color:transparent" Elevation="0">
                 
                 <MudCardContent >
                     <MudTextField T="string" Class="mt-3"  Label="Username" Required="true" HelperText="Inserire Username" Error=error RequiredError="Inserire Username!" @bind-Value=temp.Username />
-                    <MudTextField T="string" Class="mt-3" InputType="InputType.Password" HelperText="Inserire Password" Required="true" Error=error ErrorText="Username o Password errati!" RequiredError="Inserire Password!" Label="Password" @bind-Value=temp.Password></MudTextField>
+                    <MudTextField T="string" Class="mt-3" InputType="InputType.Password" HelperText="Inserire Password" Required="true" Error=error  RequiredError="Inserire Password!" Label="Password" @bind-Value=temp.Password></MudTextField>
                 </MudCardContent>
                 <MudCardActions >
                     <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="MudBlazor.Variant.Filled" Color=Color.Secondary Class="ml-auto">Accedi</MudButton>

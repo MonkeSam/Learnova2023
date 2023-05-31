@@ -7,13 +7,64 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<ElencoClassi Classi=@Classi></ElencoClassi>
+
+<MudGrid Class="h-100">
+    <MudItem xs=3 Class="h-100 w-100">
+        <MudPaper Class="h-100 d-flex justify-content-center align-items-top" Elevation=3>
+            
+            <div class="container-fluid">
+                <h3 class="text-center">HOME</h3>   
+                <MudCard>
+                    <MudCardHeader>
+                        <MudField Variant=MudBlazor.Variant.Text Label="Username">@StatoApp.Username</MudField>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudItem>
+                            <MudField Label="Nome">@StatoApp.Details.Nome</MudField>
+                            <MudField Label="Cognome">@StatoApp.Details.Cognome</MudField>
+                            <MudTextField T=string InputType="@PasswordInput" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" Label="Stipendio" Adornment="Adornment.End" IconSize=Size.Small AdornmentIcon="@PasswordInputIcon" ReadOnly=true Text="@StatoApp.Details.Stipendio.ToString()"><MudIcon Icon="@Icons.Material.Filled.EuroSymbol"></MudIcon></MudTextField>
+                        </MudItem>
+                        
+                        <MudText></MudText>
+                    </MudCardContent>
+                </MudCard>
+            </div>
+            
+        </MudPaper>
+    </MudItem>
+    <MudItem xs=9 Class="w-100">
+        <ElencoClassi Classi=@Classi></ElencoClassi>
+    </MudItem>
+    
+</MudGrid>
+
+
 @code {
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
     public List<Classe> Classi=new List<Classe>();
 
     protected override async Task OnInitializedAsync()
     {
         string api = $"/api/Classi/GetClassi?sk={StatoApp.SessionString}";
         Classi = await Http.GetFromJsonAsync<List<Classe>>(api);
+    }
+    
+    void ButtonTestclick()
+    {
+        if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
     }
 }

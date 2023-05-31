@@ -1,0 +1,136 @@
+﻿@using Shared.Classes
+@using Radzen
+@using Radzen.Blazor
+@using Radzen.Blazor.Rendering
+
+@inject IDialogService DialogService
+@inject StatoApp StatoApp
+@inject HttpClient Http
+@inject IJSRuntime JSr
+<RadzenContextMenu />
+<RadzenTooltip />
+<MudDialogProvider />
+@if (StatoApp.Details.GetType().Name == "Professore")
+{
+    
+    <RadzenDialog></RadzenDialog>
+}
+
+
+<RadzenScheduler TodayText="Oggi" Class="h-100" @ref="scheduler" LoadData=@LoadAssenze SlotRender="@OnSlotRender"  AppointmentSelect="@OnAppointmentSelect" SlotSelect="@OnSlotSelect"  Data="@Frequenza" TItem="DataItem" StartProperty="Periodo" EndProperty="Periodo" TextProperty="Text">
+    <RadzenYearView Text="Anno" />
+</RadzenScheduler>
+<style>
+    .rz-scheduler-nav-views .rz-button.rz-primary.rz-state-active {
+    color: @Colors.Orange.Darken3 !important;
+    background-color: @Colors.Amber.Lighten4 !important
+    }
+</style>
+
+@code {
+
+
+
+    [Parameter]
+    public int idStudente { get; set; }
+
+    public class DataItem
+    {
+        public DateTime Periodo { get; set; }
+        public string Text { get; set; }
+    }
+
+    private int Count = 0;
+    public RadzenScheduler<DataItem>? scheduler;
+    List<DataItem> AssenzeStud = new List<DataItem>();
+    List<DataItem> Frequenza = new List<DataItem>();
+    List<SchedulerSlotRenderEventArgs> SlotRen = new List<SchedulerSlotRenderEventArgs>();
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private DataItem tmpHelp = new DataItem();
+
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+        SlotRen.Add(args);
+        args.Attributes["data-Id"] = Count;
+        Count++;
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        for (int i = 0; i < SlotRen.Count; i++)
+        {
+            JSr.InvokeVoidAsync("ChangeSlotColor", i, (AssenzeStud.Count(x => SlotRen[i].Start.Equals(x.Periodo.Date)) > 0));
+        }
+        SlotRen.Clear();
+        Count = 0;
+    }
+
+    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+    {
+        if (StatoApp.Details.GetType().Name == "Professore")
+        {
+            MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
+            var Parameters = new DialogParameters();
+            DataItem data = new DataItem() { Periodo = args.Start,Text=null };
+            Parameters.Add("AssenzaPassata", data);
+            var dialog = await DialogService.ShowAsync<DialogAssenze>("Assenza", Parameters);
+
+            if (data != null)
+            {
+                await dialog.Result;
+                if (data.Text == "Assente" && (AssenzeStud.Count(x => data.Periodo.Equals(x.Periodo.Date))) > 0)
+                {
+                    AssenzeStud.Add(data);
+                    AggiungiAssenzaDb(data);
+                }
+            }
+            await scheduler.Reload();
+        }
+    }
+
+    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<DataItem> args)
+    {
+        if (StatoApp.Details.GetType().Name == "Professore")
+        {
+            MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
+            var Parameters = new DialogParameters();
+
+            Parameters.Add("AssenzaPassata", args.Data);
+
+            var dialog = await DialogService.ShowAsync<DialogCompiti>("Assenza", Parameters);
+            await dialog.Result;
+            if (args.Data.Text == "Assente" && (AssenzeStud.Count(x => args.Data.Periodo.Equals(x.Periodo.Date)))>0)
+            {
+                AssenzeStud.Add(args.Data);
+                AggiungiAssenzaDb(args.Data);
+            }
+            await scheduler.Reload();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        DateTime help = new DateTime(2022, 9, 15, 8, 30, 52);
+        for (int i = 0; help.Date < DateTime.Now.Date; i++)
+        {
+            if (help.DayOfWeek != 0)
+            {
+                Frequenza.Add(new DataItem { Periodo = help, Text = "" });
+            }
+            help = help.AddDays(1);
+        }
+    }
+    public async Task AggiungiAssenzaDb(DataItem sium)
+    {
+        string api = $"/api/Assenze/CreateAssenza?idStudente={idStudente}&date={sium.Periodo}&sk={StatoApp.SessionString}";
+        await Http.PostAsJsonAsync<DataItem>(api, null);
+    }
+    public async Task LoadAssenze(SchedulerLoadDataEventArgs args)
+    {
+        List<DateTime> tmp = new List<DateTime>();
+        string api = $"/api/Assenze/GetAssenze?idStudente={idStudente}&sk={StatoApp.SessionString}";
+        tmp = await Http.GetFromJsonAsync<List<DateTime>>(api);
+        tmp.ForEach(x => AssenzeStud.Add(new DataItem { Periodo = x, Text = "Assente" }));
+    }
+}

@@ -1,0 +1,49 @@
+﻿@using Shared.Classes
+@using MudBlazor
+
+
+<MudDialog Class=" justify-content-center align-items-center mx-auto my-auto">
+    <DialogContent>
+        <MudCard Class="w-100 h-100">
+            <EditForm>
+                <DataAnnotationsValidator />
+
+                <MudCardContent Style="overflow-y:scroll">
+                    <MudItem>
+                        <MudTextField Label="Data" AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=true Text=@AssenzaPassata.Periodo.ToShortDateString()></MudTextField>
+                        <MudSelect Label="Presenza" Variant="MudBlazor.Variant.Filled" T="string" @bind-Value=@AssenzaPassata.Text>
+                            @foreach (string x in tipoAssente)
+                            {
+                                <MudSelectItem T=string Value=@x>@x</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                </MudCardContent>
+            </EditForm>
+        </MudCard>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" Variant="MudBlazor.Variant.Filled" OnClick="Submit">Yes</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private string[] tipoAssente = new string[2] { "Presente", "Assente" };
+
+    public class DataItem
+    {
+        public DateTime Periodo { get; set; }
+        public string Text { get; set; }
+    }
+
+    [Parameter]
+    public DataItem AssenzaPassata { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    void Cancel() => MudDialog.Cancel();
+}

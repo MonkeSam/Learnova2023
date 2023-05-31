@@ -28,7 +28,7 @@ namespace Learnova2023.API.ContextDB
 
                     foreach (DataRow r in dt.Rows)
                     {
-                        Professori.Add(new Professore(Convert.ToInt32(r[0]), Convert.ToString(r[1]), Convert.ToString(r[2]), Convert.ToString(r[3]), Convert.ToInt32(4)));
+                        Professori.Add(new Professore(Convert.ToInt32(r[0]), Convert.ToString(r[1]), Convert.ToString(r[2]), Convert.ToString(r[3]), Convert.ToInt32(r[4])));
                     }
                 }
             }
@@ -58,7 +58,7 @@ namespace Learnova2023.API.ContextDB
 
                     foreach (DataRow r in dt.Rows)
                     {
-                        Professore = new Professore(Convert.ToInt32(r[0]), Convert.ToString(r[1]), Convert.ToString(r[2]), Convert.ToString(r[3]), Convert.ToInt32(4));
+                        Professore = new Professore(Convert.ToInt32(r[0]), Convert.ToString(r[1]), Convert.ToString(r[2]), Convert.ToString(r[3]), Convert.ToInt32(r[4]));
                     }
                 }
             }
