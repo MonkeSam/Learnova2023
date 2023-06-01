@@ -3,55 +3,85 @@
 @inject StatoApp StatoApp
 @inject HttpClient Http
 @using Shared.Classes
+@using Learnova2023.Shared.Components
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 
-<MudGrid Class="h-100">
+<MudGrid Class="h-100 " >
     <MudItem xs=3 Class="h-100 w-100">
         <MudPaper Class="h-100 d-flex justify-content-center align-items-top" Elevation=3>
             
-            <div class="container-fluid">
-                <h3 class="text-center">HOME</h3>   
-                <MudCard>
-                    <MudCardHeader>
-                        <MudField Variant=MudBlazor.Variant.Text Label="Username">@StatoApp.Username</MudField>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudItem>
-                            <MudField Label="Nome">@StatoApp.Details.Nome</MudField>
-                            <MudField Label="Cognome">@StatoApp.Details.Cognome</MudField>
-                            <MudTextField T=string InputType="@PasswordInput" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" Label="Stipendio" Adornment="Adornment.End" IconSize=Size.Small AdornmentIcon="@PasswordInputIcon" ReadOnly=true Text="@StatoApp.Details.Stipendio.ToString()"><MudIcon Icon="@Icons.Material.Filled.EuroSymbol"></MudIcon></MudTextField>
-                        </MudItem>
-                        
-                        <MudText></MudText>
-                    </MudCardContent>
-                </MudCard>
+            <div class="container-fluid ">
+                <h3 class="text-center">HOME</h3>
+                <div class="d-flex justify-content-center align-items-top">
+                    <MudCard Class="h-100">
+                        <MudCardHeader>
+                            <MudField Variant=MudBlazor.Variant.Text Label="Username">@StatoApp.Username</MudField>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudItem>
+                                <MudField Class="fw-bold" Label="Nome">@StatoApp.Details.Nome</MudField>
+                                <MudField Class="fw-bold" Label="Cognome">@StatoApp.Details.Cognome</MudField>
+                                <MudTextField T=string InputType="@PasswordInput" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" Label="Stipendio" Adornment="Adornment.End" IconSize=Size.Small AdornmentIcon="@PasswordInputIcon" ReadOnly=true Text="@StatoApp.Details.Stipendio.ToString()"><MudIcon Icon="@Icons.Material.Filled.EuroSymbol"></MudIcon></MudTextField>
+                                
+                                
+                            </MudItem>
+                            <MudItem Class="my-2">
+                                <MudExpansionPanels>
+                                    <MudExpansionPanel Class="fw-bold" Text="Materie">
+                                        @foreach(Materia m in Materie)
+                                        {
+                                            <MudText>@m.Nome.ToUpper()</MudText>
+                                            <MudDivider Light DividerType="DividerType.FullWidth"></MudDivider>
+                                        }
+                                    </MudExpansionPanel>
+                                </MudExpansionPanels>
+                            </MudItem>
+                        </MudCardContent>
+                    </MudCard>
+                </div>
+                
             </div>
-            
+
         </MudPaper>
     </MudItem>
-    <MudItem xs=9 Class="w-100">
+    <MudItem xs=8 Class="w-100">
+        <MudText Typo="Typo.h3">@(Enum.GetName(CurrentClassi).Replace('_', ' ').ToUpper() == "LE TUE CLASSI" ? "ALTRE CLASSI" : "LE TUE CLASSI")</MudText>
+            <MudButton Color=Color.Error Class="align-content-start justify-content-center" OnClick="ChangeList">@Enum.GetName(CurrentClassi).Replace('_',' ')</MudButton>
         <ElencoClassi Classi=@Classi></ElencoClassi>
+        
+    </MudItem >
+    
+    <MudItem xs="1" Class=" d-flex justify-content-end align-items-end">
+            
     </MudItem>
     
 </MudGrid>
 
 
-@code {
+    @code {
+    bool currentState=false;
+    public enum currentList
+    {
+        Altre_Classi=0,Le_Tue_classi=1
+    }
+    public currentList CurrentClassi { get; set; }
 
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
     public List<Classe> Classi=new List<Classe>();
+    public List<Materia> Materie = new List<Materia>();
 
     protected override async Task OnInitializedAsync()
     {
-        string api = $"/api/Classi/GetClassi?sk={StatoApp.SessionString}";
-        Classi = await Http.GetFromJsonAsync<List<Classe>>(api);
+        LoadClassi();
+        string api = $"/api/Professore/GetCompetenza?id={StatoApp.Details.Id}&sk={StatoApp.SessionString}";
+        Materie = await Http.GetFromJsonAsync<List<Materia>>(api);
     }
-    
+
     void ButtonTestclick()
     {
         if (isShow)
@@ -66,5 +96,35 @@
             PasswordInputIcon = Icons.Material.Filled.Visibility;
             PasswordInput = InputType.Text;
         }
+    }
+    public void ChangeList()
+    {
+        if (currentState)
+        {
+            currentState = false;
+            CurrentClassi = currentList.Le_Tue_classi;
+        }
+        else
+        {
+            currentState = true;
+            CurrentClassi = currentList.Altre_Classi;
+        }
+        LoadClassi();
+    }
+    public async Task LoadClassi()
+    {
+        string api;
+
+        if (currentState)
+        {
+            api = $"/api/Classi/GetClassi?sk={StatoApp.SessionString}";
+        }
+        else
+        {
+            api = $"/api/Professore/GetAssegnazione?id={StatoApp.Details.Id}&sk={StatoApp.SessionString}";
+        }
+        
+        Classi = await Http.GetFromJsonAsync<List<Classe>>(api);
+
     }
 }

@@ -128,5 +128,62 @@ namespace Learnova2023.API.ContextDB
                 }
             }
         }
+        public static List<Classe> GetAssegnazione(string? sessionKey,int idProfessore)
+        {
+            query = "GetAssegnazione;";
+            List<Classe>Classi= new List<Classe>();
+            using (MySqlConnection con = new(ConnectionString))
+            {
+                using (MySqlCommand cmd = new(query, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    if (con.State == ConnectionState.Closed)
+                        con.Open();
+
+                    cmd.Parameters.AddWithValue("_sessionKey", sessionKey).Direction = ParameterDirection.Input;
+                    cmd.Parameters.AddWithValue("idProfessore", idProfessore).Direction = ParameterDirection.Input;
+                    
+
+                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+
+                    adp.Fill(dt);
+
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        Classi.Add(new Classe(Convert.ToInt32(r[0]), Convert.ToInt32(r[1]), Convert.ToChar(r[2]), Convert.ToString(r[3])));
+                    }
+                }
+            }
+            return Classi;
+        }
+        public static List<Materia> GetCompetenza(string? sessionKey, int idProfessore)
+        {
+            query = "GetCompetenza;";
+            List<Materia> Materie = new List<Materia>();
+            using (MySqlConnection con = new(ConnectionString))
+            {
+                using (MySqlCommand cmd = new(query, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    if (con.State == ConnectionState.Closed)
+                        con.Open();
+
+                    cmd.Parameters.AddWithValue("_sessionKey", sessionKey).Direction = ParameterDirection.Input;
+                    cmd.Parameters.AddWithValue("idProfessore", idProfessore).Direction = ParameterDirection.Input;
+
+                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+
+                    adp.Fill(dt);
+
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        Materie.Add(new Materia(Convert.ToString(r[1]), Convert.ToInt32(r[0])));
+                    }
+                }
+            }
+            return Materie;
+        }
     }
 }

@@ -40,5 +40,15 @@ namespace Learnova2023.API.Controllers
         {
             ContextProfessori.DeleteProfessore(idProf, sk);
         }
+        [HttpGet(nameof(GetAssegnazione))]
+        public List<Classe> GetAssegnazione(int id,string? sk)
+        {
+            return ContextProfessori.GetAssegnazione(sk,id);
+        }
+        [HttpGet(nameof(GetCompetenza))]
+        public List<Materia> GetCompetenza(int id, string? sk)
+        {
+            return ContextProfessori.GetCompetenza(sk, id);
+        }
     }
 }
