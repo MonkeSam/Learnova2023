@@ -1,9 +1,13 @@
 ﻿@inject StatoApp StatoApp
 @using Classes
 
+<MudText Typo="Typo.h3">@SelectedList.Replace('_',' ').ToUpper()</MudText>
+<MudButton Variant="MudBlazor.Variant.Filled" Color=Color.Error Class="align-content-start justify-content-center" OnClick="@(e=>ChangeList.InvokeAsync())">@(SelectedList == "Le_Tue_classi" ? "Altre Classi" : "Le tue classi")</MudButton>
 
-<div class="h-100 container-fluid d-flex justify-content-center align-items-center">
-    <MudPaper Elevation="4" Class="w-100 m-5">
+<div class=" container-fluid d-flex justify-content-center align-items-top">
+    
+        
+        <MudPaper Elevation="4" Class="w-100 m-5">
         
         <MudList @bind-SelectedItem=sium Clickable=true>
             @foreach (Classe c in Classi)
@@ -20,7 +24,9 @@
                 <MudDivider DividerType="DividerType.Middle" Light="true"></MudDivider>
             }
         </MudList>
-    </MudPaper>
+      </MudPaper>
+    
+    
     
     
     
@@ -32,7 +38,14 @@
 
 @code {
     [Parameter]
+    public string SelectedList { get; set; }
+
+    [Parameter]
     public List<Classe> Classi { get; set; }
+
+    [Parameter]
+    public EventCallback ChangeList { get; set; }
+
     public MudListItem sium = new MudListItem();
     protected override async Task OnInitializedAsync()
     {

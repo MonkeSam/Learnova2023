@@ -2,7 +2,11 @@
 @inject NavigationManager Navigation
 @inject StatoApp StatoApp
 
+<MudThemeProvider Theme="MyCustomTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
 @*@if (!render) return;*@
+
 
 <RadzenLayout style="height: 100%">
     <RadzenHeader Style=@($"background-color:{Colors.Orange.Darken4}") >
@@ -67,10 +71,10 @@
         <RadzenPanelMenu Match="NavLinkMatch.Prefix">
             @if (StatoApp.Details.GetType().Name == "Studente")
             {
-                
-                <RadzenPanelMenuItem Text="Home" Icon="home" Path=@($"{StatoApp.Details.GetType().Name}/Home") />
+
+                <RadzenPanelMenuItem Style=@($"background-color:{Colors.Amber.Lighten3}") Text="Home" Icon="home" Path=@($"{StatoApp.Details.GetType().Name}/Home") />
     
-                <RadzenPanelMenuItem Text="Voti" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Classi")></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem  Text="Voti" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Classi")></RadzenPanelMenuItem>
                 <RadzenPanelMenuItem Text="Note" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Classi") />
                 <RadzenPanelMenuItem Text="Assenze" Icon="event" Path=@($"{StatoApp.Details.GetType().Name}/Assenze") />
             }
@@ -99,6 +103,14 @@
     .rz-sidebar-toggle:hover{
         background-color:@Colors.Yellow.Darken4!important
     }
+
+    .rz-panel-menu .rz-navigation-item-active, .rz-panel-menu .rz-navigation-item-wrapper-active, .rz-panel-menu .rz-navigation-item-wrapper-active .rz-navigation-item-icon {
+        background-color: rgb(255, 224, 130,0.4) !important;
+        color: @Colors.Orange.Darken4!important;
+        
+        
+        
+    }
 </style>
 
 @code {
@@ -115,7 +127,16 @@
     //    render = true;
 
     //}
+    MudTheme MyCustomTheme = new MudTheme()
+        {
+            Palette = new PaletteLight()
+            {
+                Primary = Colors.Yellow.Darken3,
+                Secondary = Colors.Orange.Darken4,
+                Tertiary = Colors.Amber.Lighten3
 
+            }
+        };
    
 
 }

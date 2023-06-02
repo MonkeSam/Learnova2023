@@ -6,8 +6,7 @@
 @using Radzen.Blazor
 @using Radzen.Blazor.Rendering
 @using Shared.Classes;
-<MudThemeProvider Theme="MyCustomTheme"></MudThemeProvider>
-<MudDialogProvider />
+
 <RadzenDialog />
 <RadzenContextMenu />
 <RadzenTooltip />
@@ -38,6 +37,7 @@
     {
         if(StatoApp.Details.GetType().Name!="Studente")
         {
+
             MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
             var Parameters = new DialogParameters();
             Compito data = new Compito();
@@ -45,10 +45,15 @@
             Parameters.Add("Compito", data);
             var dialog = await DialogService.ShowAsync<DialogCompiti>("Compito", Parameters);
 
+
             if (data != null)
             {
                 Compiti.Add(data);
-                await dialog.Result;
+                var result =await dialog.Result;
+                if(!result.Cancelled && bool.TryParse(result.Data.ToString(), out bool resultbool))
+                {
+                    LoadData(null);
+                }
                 await scheduler.Reload();
             }
         }
@@ -95,7 +100,8 @@
             Palette = new PaletteLight()
             {
                 Primary = Colors.Yellow.Darken3,
-                Secondary = Colors.Orange.Darken4
+                Secondary = Colors.Orange.Darken4,
+                Tertiary = Colors.Amber.Lighten3
             }
         };
 

@@ -5,15 +5,15 @@
         public int Id { get; set; }
         public int Anno { get; set; }
 
-        public char Sezione { get; set;}
+        public char Sezione { get; set; }
         public string? Indirizzo { get; set; }
 
-        public Classe(int id,int anno,char sezione,string indirizzo) 
+        public Classe(int id, int anno, char sezione, string indirizzo)
         {
             this.Id = id;
-            this.Anno = anno;   
+            this.Anno = anno;
             this.Sezione = sezione;
-            this.Indirizzo= indirizzo;
+            this.Indirizzo = indirizzo;
         }
         public string RitornaClasse()
         {
@@ -21,8 +21,9 @@
         }
         public override string ToString()
         {
-            return $"{Anno} {Sezione} {Indirizzo}" ;
+            return $"{Anno} {Sezione} {Indirizzo}";
         }
+
+
     }
 }
- 

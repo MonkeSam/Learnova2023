@@ -30,7 +30,7 @@ namespace Learnova2023.API.ContextDB
 
                     foreach (DataRow r in dt.Rows)
                     {
-                        Compiti.Add(new Compito(Convert.ToDateTime(r[0]), Convert.ToString(r[1]), new Professore(Convert.ToString(r[2]), Convert.ToString(r[3])), Convert.ToString(r[4]), Convert.ToString(r[5])));
+                        Compiti.Add(new Compito(Convert.ToDateTime(r[0]), Convert.ToString(r[1]), new Professore(Convert.ToInt32(r[2]), Convert.ToString(r[3]), Convert.ToString(r[4]), Convert.ToString(r[5]), Convert.ToInt32(r[6])), new Materia(Convert.ToString(r[7]), Convert.ToInt32(r[8])), Convert.ToString(r[9]), Convert.ToInt32(r[10])));
                     }
                 }
             }
@@ -46,10 +46,10 @@ namespace Learnova2023.API.ContextDB
                     if (con.State == ConnectionState.Closed)
                         con.Open();
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("idProfessore", idProfessore).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("idClasse", idClasse).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("dataOttenimento", date).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("tipoCompito", tipo).Direction = ParameterDirection.Input;
-                    cmd.Parameters.AddWithValue("idProfessore", idProfessore).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("idMateria", idMateria).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("descrizione", desc).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("_sessionKey", sessionKey).Direction = ParameterDirection.Input;
@@ -59,7 +59,7 @@ namespace Learnova2023.API.ContextDB
                 }
             }
         }
-        public static void UpdateCompito(int idClasse, DateTime date, string tipo, int idProfessore, int idMateria, string desc, string? sessionKey)
+        public static void UpdateCompito(int idCompito, DateTime date, string tipo, int idMateria, string desc, string? sessionKey)
         {
             query = "UpdateCompito";
             using (MySqlConnection con = new(ConnectionString))
@@ -70,20 +70,21 @@ namespace Learnova2023.API.ContextDB
                         con.Open();
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("idClasse", idClasse).Direction = ParameterDirection.Input;
+
                     cmd.Parameters.AddWithValue("dataOttenimento", date).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("tipoCompito", tipo).Direction = ParameterDirection.Input;
-                    cmd.Parameters.AddWithValue("idProfessore", idProfessore).Direction = ParameterDirection.Input;
+
                     cmd.Parameters.AddWithValue("idMateria", idMateria).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("descrizione", desc).Direction = ParameterDirection.Input;
                     cmd.Parameters.AddWithValue("_sessionKey", sessionKey).Direction = ParameterDirection.Input;
+                    cmd.Parameters.AddWithValue("_idCompito", idCompito).Direction = ParameterDirection.Input;
                     MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     adp.Fill(dt);
                 }
             }
         }
-        public static void DeleteCompito(int idClasse, DateTime date, string tipo, int idProfessore, int idMateria, string sessionKey)
+        public static void DeleteCompito(int idCompito, string sessionKey)
         {
             query = "DeleteCompito";
             using (MySqlConnection con = new(ConnectionString))
@@ -93,12 +94,9 @@ namespace Learnova2023.API.ContextDB
                     if (con.State == ConnectionState.Closed)
                         con.Open();
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("idClasse", idClasse).Direction = ParameterDirection.Input;
-                    cmd.Parameters.AddWithValue("dataOttenimento", date).Direction = ParameterDirection.Input;
-                    cmd.Parameters.AddWithValue("tipoCompito", tipo).Direction = ParameterDirection.Input;
-                    cmd.Parameters.AddWithValue("idProfessore", idProfessore).Direction = ParameterDirection.Input;
-                    cmd.Parameters.AddWithValue("idMateria", idMateria).Direction = ParameterDirection.Input;
+
                     cmd.Parameters.AddWithValue("_sessionKey", sessionKey).Direction = ParameterDirection.Input;
+                    cmd.Parameters.AddWithValue("_idCompito", idCompito).Direction = ParameterDirection.Input;
                     MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     adp.Fill(dt);

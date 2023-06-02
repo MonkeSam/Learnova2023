@@ -1,12 +1,17 @@
 ﻿@inherits LayoutComponentBase
 @inject StatoApp StatoApp
 @inject NavigationManager NavigationManager
+
+<MudThemeProvider Theme="MyCustomTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
 @if (StatoApp.SessionString!=null && NavigationManager.Uri!=$"{NavigationManager.BaseUri}")
 {
     <RadzenLayout style="height: 100%" >
         <RadzenHeader Style=@($"background-color:{Colors.Orange.Darken4}")>
              <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="0">
-                <RadzenLabel Text=@(($"Benvenuto {StatoApp.Username}").ToUpper()) />
+                
                 <div class="d-flex justify-content-end align-items-end w-100">
                     <div class='container__svgs ' style=@($"width:min-content")>
                         <div class="my-auto">
@@ -57,17 +62,50 @@
                     </div>
                 </div>
              </RadzenStack>
+             
         </RadzenHeader>
-        <RadzenBody class="mud-palette-primary">
-            <div class="rz-p-4 h-100">
-                @Body
-            </div>
-        </RadzenBody>
+        <CascadingValue Value="this">
+            @if (Loading)
+            {
+                <RadzenBody class="p-0 mud-palette-primary">
+
+                    <MudProgressLinear Color="Color.Tertiary" Indeterminate="true" Class="my-0 position-absolute" Size="Size.Large" />
+
+                </RadzenBody>
+                
+            }
+            else
+            {
+                <RadzenBody class=" mud-palette-primary">
+
+                    <div class="rz-p-4 h-100">
+                        
+                        @Body
+                    </div>
+
+                </RadzenBody>
+                
+            }
+        </CascadingValue>
+        
     </RadzenLayout>
 }
 else
 {
     <main>@Body</main>
 }
+@code{
+    public bool Loading { get; set; }
 
+    MudTheme MyCustomTheme = new MudTheme()
+        {
+            Palette = new PaletteLight()
+            {
+                Primary = Colors.Yellow.Darken3,
+                Secondary = Colors.Orange.Darken4,
+                Tertiary = Colors.Amber.Lighten3
+
+            }
+        };
+}
 

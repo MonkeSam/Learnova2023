@@ -11,12 +11,12 @@
                 @*HREF ti manda ad una pagina ogni volta che si clicca, bisogna sostituire il tutto facendo il modo che si setti una variabile globale con l'id classe == a c.Id e poi utilizzare un Navigate to o altra roba*@
                 <MudListItem>
                     <MudStack Row="true" AlignItems="MudBlazor.AlignItems.Center">
-                        <MudAvatar Color="Color.Secondary">@($"{c.Nome[0]}{c.Cognome[0]}")</MudAvatar>
+                        <MudAvatar Style="color:black" Color="Color.Primary">@($"{c.Nome[0]}{c.Cognome[0]}")</MudAvatar>
                             <div class="d-flex justify-content-start align-items-center text w-100 fw-bold">@($"{c.Cognome} {c.Nome}")</div>
                         <MudButtonGroup Class="d-flex justify-content-center align-items-center">
                             <MudIconButton Style="z-index:10" Class="justify-content-end align-items-end" Icon="@Icons.Material.Outlined.Check" Color="Color.Primary" Href=@($"/{StatoApp.Details.GetType().Name}/Calendario")>Calendario</MudIconButton>
                                 <MudIconButton Style="z-index:10" Class="justify-content-end align-items-end"  Color="Color.Transparent" Href=@($"/{StatoApp.Details.GetType().Name}/Calendario")>
-                                    <MudAvatar Style="background-color:transparent;color:black" Square=true >10+</MudAvatar>    
+                                    <MudAvatar   Style=@($"background-color:{Colors.Orange.Darken1};color:black")  >10+</MudAvatar>    
                                 </MudIconButton>
                                 <MudIconButton Style="z-index:10" Class="justify-content-end align-items-end" Icon="@Icons.Material.Filled.EditNote" Color="Color.Primary" Href=@($"/{StatoApp.Details.GetType().Name}/Calendario")>Calendario</MudIconButton>
                             </MudButtonGroup>

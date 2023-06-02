@@ -20,15 +20,15 @@ namespace Learnova2023.API.Controllers
         }
 
         [HttpPut(nameof(UpdateCompito))]
-        public void UpdateCompito(int idClasse, DateTime date, string tipo, int idProfessore, int idMateria, string desc, string sk)
+        public void UpdateCompito(int idCompito, DateTime date, string tipo, int idMateria, string desc, string sk)
         {
-            ContextCompiti.UpdateCompito(idClasse, date, tipo, idProfessore, idMateria, desc, sk);
+            ContextCompiti.UpdateCompito(idCompito, date, tipo, idMateria, desc, sk);
         }
 
         [HttpDelete(nameof(DeleteCompito))]
-        public void DeleteCompito(int idClasse, DateTime date, string tipo, int idProfessore, int idMateria, string sk)
+        public void DeleteCompito(int idCompito, string sk)
         {
-            ContextCompiti.DeleteCompito(idClasse, date, tipo, idProfessore, idMateria, sk);
+            ContextCompiti.DeleteCompito(idCompito, sk);
         }
     }
 }
