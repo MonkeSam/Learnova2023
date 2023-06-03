@@ -6,8 +6,10 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-@if (StatoApp.SessionString!=null && NavigationManager.Uri!=$"{NavigationManager.BaseUri}")
+@if (NavigationManager.Uri!=$"{NavigationManager.BaseUri}")
 {
+    OnInitialized();
+    @if (!render) return;
     <RadzenLayout style="height: 100%" >
         <RadzenHeader Style=@($"background-color:{Colors.Orange.Darken4}")>
              <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="0">
@@ -95,6 +97,19 @@ else
     <main>@Body</main>
 }
 @code{
+    bool render = false;
+    
+
+    protected override void OnInitialized()
+    {
+        if(StatoApp.SessionString == null)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+        render = true;
+
+    }
     public bool Loading { get; set; }
 
     MudTheme MyCustomTheme = new MudTheme()

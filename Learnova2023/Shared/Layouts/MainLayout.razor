@@ -5,7 +5,7 @@
 <MudThemeProvider Theme="MyCustomTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
-@*@if (!render) return;*@
+@if (!render) return;
 
 
 <RadzenLayout style="height: 100%">
@@ -114,19 +114,19 @@
 </style>
 
 @code {
-    //bool render = false;
+    bool render = false;
     bool sidebar1Expanded = true;
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    if(StatoApp.SessionString == null)
-    //    {
-    //        Navigation.NavigateTo("/");
-    //        return;
-    //    }
-    //    render = true;
+    protected override async Task OnInitializedAsync()
+    {
+        if(StatoApp.SessionString == null)
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+        render = true;
 
-    //}
+    }
     MudTheme MyCustomTheme = new MudTheme()
         {
             Palette = new PaletteLight()

@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager Navigation
-
+@inject StatoApp StatoApp
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 
@@ -109,5 +109,12 @@
     public EventCallback<LoginTemp> OnConferma { get; set; }
 
     string orangeDarken4= Colors.Orange.Darken4;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        StatoApp.Reset();
+
+    }
     
 }

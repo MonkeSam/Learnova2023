@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject StatoApp StatoApp
 @inject IDialogService DialogService
+@inject ContextMenuService ContextMenuService
 @using Radzen
 @using Radzen.Blazor
 @using Radzen.Blazor.Rendering
@@ -12,8 +13,8 @@
 <RadzenTooltip />
 
 
-<RadzenScheduler Class="h-100"   @ref="scheduler"  LoadData=@LoadData SlotSelect=@OnSlotSelect SlotRender=@OnSlotRender AppointmentRender="@OnAppointmentRender"  AppointmentSelect="@OnAppointmentSelect" Data="@Compiti" TItem="Compito" StartProperty="Date" EndProperty="Date" TextProperty="Descrizione">
-    <RadzenMonthView />
+<RadzenScheduler Class="h-100"  @ref="scheduler" TodayText="Oggi" SlotRender=@OnSlotRender LoadData=@LoadData SlotSelect=@OnSlotSelect AppointmentRender="@OnAppointmentRender" AppointmentSelect="@OnAppointmentSelect" Data="@Compiti" TItem="Compito" StartProperty="Date" EndProperty="Date" TextProperty="Materia.Nome">
+    <RadzenMonthView  Text="Mese"  />
 </RadzenScheduler>
 
 <style>
@@ -32,6 +33,7 @@
     public RadzenScheduler<Compito> scheduler;
     List<Compito> Compiti = new List<Compito>();
 
+    
 
     public void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
@@ -73,14 +75,14 @@
         switch (args.Data.Tipo)
         {
             case "Verifica":
-                args.Attributes["style"] = $"background:{Colors.Orange.Darken4}";
+                args.Attributes["style"] = $"background:{Colors.DeepOrange.Accent3};";
                 break;
 
             case "Interrogazione":
-                args.Attributes["style"] = $"background:{Colors.Yellow.Darken2}";
+                args.Attributes["style"] = $"background:{Colors.Yellow.Accent4};color:black";
                 break;
             case "Compito":
-                args.Attributes["style"] = $"background:{Colors.Amber.Lighten2}";
+                args.Attributes["style"] = $"background:{Colors.Amber.Accent4};color:black";
                 break;
 
         }

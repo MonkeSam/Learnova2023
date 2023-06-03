@@ -8,12 +8,12 @@
 
 
 
-<div class="container-fluid h-100  d-flex justify-content-center align-items-top" >
+<div class="container-fluid h-100  d-flex justify-content-center align-items-center" >
     <MudGrid Class=" h-100 d-flex ">
 
-        <MudItem xs=3 Class=" d-flex justify-content-center align-items-center ">
+        <MudItem xs=3 Class=" d-flex justify-content-center align-items-center mb-9 ">
             
-            <MudPaper Class="w-100 d-flex justify-content-center align-items-center" Elevation=3>
+            <MudPaper Class="w-100 d-flex justify-content-center align-items-start" Elevation=3>
                 
                 <div class="container-fluid m-2 justify-content-center align-items-center">
                     
@@ -52,7 +52,7 @@
                                     </MudExpansionPanels>
                                 </MudItem>
                                 <MudItem Class="d-flex justify-content-end align-items-center">
-                                    <MudButton    Variant="MudBlazor.Variant.Filled" OnClick="@Logout" Color=Color.Error  IconSize="Size.Medium">Logout</MudButton>
+                                    <MudButton ButtonType="MudBlazor.ButtonType.Button"   Variant="MudBlazor.Variant.Filled" OnClick="@Logout" Color=Color.Error>Logout</MudButton>
                                 </MudItem>
                             </MudCardContent>
                         </MudCard>
