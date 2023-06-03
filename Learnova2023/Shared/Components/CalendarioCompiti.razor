@@ -12,7 +12,7 @@
 <RadzenTooltip />
 
 
-<RadzenScheduler Class="h-100"  @ref="scheduler"  LoadData=@LoadData SlotSelect=@OnSlotSelect AppointmentRender="@OnAppointmentRender"  AppointmentSelect="@OnAppointmentSelect" Data="@Compiti" TItem="Compito" StartProperty="Date" EndProperty="Date" TextProperty="Descrizione">
+<RadzenScheduler Class="h-100"   @ref="scheduler"  LoadData=@LoadData SlotSelect=@OnSlotSelect SlotRender=@OnSlotRender AppointmentRender="@OnAppointmentRender"  AppointmentSelect="@OnAppointmentSelect" Data="@Compiti" TItem="Compito" StartProperty="Date" EndProperty="Date" TextProperty="Descrizione">
     <RadzenMonthView />
 </RadzenScheduler>
 
@@ -33,6 +33,14 @@
     List<Compito> Compiti = new List<Compito>();
 
 
+    public void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+        if (args.Start.Date == DateTime.Today)
+        {
+            args.Attributes["style"] = $"background: {Colors.Amber.Lighten5};";
+        }
+    }
+
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
         if(StatoApp.Details.GetType().Name!="Studente")
@@ -40,7 +48,7 @@
 
             MudBlazor.DialogOptions closeOnEscapeKey = new MudBlazor.DialogOptions() { CloseOnEscapeKey = true };
             var Parameters = new DialogParameters();
-            Compito data = new Compito();
+            Compito data = new Compito() { Date=args.Start};
             Parameters.Add("stato", StatoApp);
             Parameters.Add("Compito", data);
             var dialog = await DialogService.ShowAsync<DialogCompiti>("Compito", Parameters);
@@ -49,6 +57,8 @@
             if (data != null)
             {
                 Compiti.Add(data);
+                
+                
                 var result =await dialog.Result;
                 if(!result.Cancelled && bool.TryParse(result.Data.ToString(), out bool resultbool))
                 {

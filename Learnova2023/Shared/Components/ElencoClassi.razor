@@ -9,7 +9,7 @@
         
         <MudPaper Elevation="4" Class="w-100 m-5">
         
-        <MudList @bind-SelectedItem=sium Clickable=true>
+        <MudList @bind-SelectedItem="@sium" Clickable=true>
             @foreach (Classe c in Classi)
             {
                 @*HREF ti manda ad una pagina ogni volta che si clicca, bisogna sostituire il tutto facendo il modo che si setti una variabile globale con l'id classe == a c.Id e poi utilizzare un Navigate to o altra roba*@

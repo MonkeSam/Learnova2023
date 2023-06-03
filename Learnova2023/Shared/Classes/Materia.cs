@@ -11,7 +11,7 @@
             this.Nome = nome;
             this.Id = id;
         }
-        public bool Equals(Materia? m)
+        public bool Equals(Materia m)
         {
             return this.Id == m.Id ? true : false;
         }
@@ -20,5 +20,7 @@
         {
             return this.Nome;
         }
+        
+
     }
 }

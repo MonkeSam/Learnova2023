@@ -15,10 +15,11 @@
                     <MudGrid>
                         <MudItem xs="6" >   
                             <MudTextField Label="Professore" AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=true Text=@tmp.Professore.ToString()></MudTextField>
-                            <MudSelect Label="Materia" Variant="MudBlazor.Variant.Filled" T="string" ReadOnly=Readonly T=@Compito.Materia @*trovare un metodo per fare il binding con la classe "Materia in modo da riuscire a cambiare la materia di un compito tramite Dialog"*@>
+                            @*trovare un metodo per fare il binding con la classe "Materia in modo da riuscire a cambiare la materia di un compito tramite Dialog"*@
+                            <MudSelect Label="Materia" Variant="MudBlazor.Variant.Filled"  @bind-Value="tmp.Materia" ReadOnly=Readonly  T=@Materia >
                                 @foreach(Materia mat in ListaMaterie)
                                 {
-                                    <MudSelectItem T=string Value=@mat.Nome>@mat.Nome</MudSelectItem>
+                                    <MudSelectItem  T=Materia Value="mat" ></MudSelectItem>
                                 }
                             </MudSelect>
                                 
@@ -69,7 +70,7 @@
     [Parameter]
     public Compito Compito { get; set; }
 
-    
+
 
     public Compito tmp { get; set; }
 
@@ -80,7 +81,7 @@
     protected override async Task OnInitializedAsync()
     {
         tmp = new Compito() {Id=Compito.Id,Professore=Compito.Professore,Materia=Compito.Materia,Tipo=Compito.Tipo,Date=Compito.Date,Descrizione=Compito.Descrizione };
-        
+
         if(Compito.Professore != null)
         {
             if (stato.Details.GetType() == typeof(Professore) && (stato.Details.Equals(Compito.Professore) == true))
@@ -95,19 +96,24 @@
         }
         string api = $"/api/Materia/GetMaterie?sk={stato.SessionString}";
         ListaMaterie = await Http.GetFromJsonAsync<List<Materia>>(api);
-        
+
 
     }
-    void DataSpostata(DateTime? dataScelta)
-    {
-        tmp.Date = dataScelta;
-    }
+    void DataSpostata(DateTime? dataScelta) => tmp.Date = dataScelta;
+
+
     public async Task Submit(){
 
-        if (Compito.Equals(tmp)==false)
+        if (Compito.Id == 0 && Compito.Equals(tmp) == false)
         {
-            string api = $"/api/Compiti/UpdateCompito?idCompito={tmp.Id}&idClasse={stato.idClasse}&date={tmp.Date.Value.ToString("s")}&tipo={tmp.Tipo}&idProfessore={tmp.Professore.Id}&idMateria={tmp.Materia.Id}&desc={tmp.Descrizione}&sk={stato.SessionString}";
-            await Http.PutAsJsonAsync<Compito>(api,null);
+            string api = $"/api/Compiti/CreateCompito?idClasse={stato.idClasse}&date={tmp.Date.Value.ToString("s")}&tipo={tmp.Tipo}&idProfessore={tmp.Professore.Id}&idMateria={tmp.Materia.Id}&desc={tmp.Descrizione}&sk={stato.SessionString}";
+            await Http.PostAsJsonAsync<Compito>(api, null);
+
+        }
+        else if (Compito.Equals(tmp) == false)
+        {
+            string api = $"/api/Compiti/UpdateCompito?idCompito={tmp.Id}&idClasse={stato.idClasse}&date={tmp.Date.Value.ToString("s")}&tipo={tmp.Tipo}&idMateria={tmp.Materia.Id}&desc={tmp.Descrizione}&sk={stato.SessionString}";
+            await Http.PutAsJsonAsync<Compito>(api, null);
         }
         MudDialog.Close(DialogResult.Ok(true));
     }

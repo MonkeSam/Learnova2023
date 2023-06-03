@@ -2,12 +2,13 @@
 @layout EmptyLayout
 @inject StatoApp StatoApp
 @inject HttpClient Http
+@inject NavigationManager Navigation
 @using Shared.Classes
 @using Learnova2023.Shared.Components
 
 
 
-<div class="container-fluid h-100  d-flex justify-content-center align-items-top">
+<div class="container-fluid h-100  d-flex justify-content-center align-items-top" >
     <MudGrid Class=" h-100 d-flex ">
 
         <MudItem xs=3 Class=" d-flex justify-content-center align-items-center ">
@@ -22,7 +23,7 @@
                     </div>
                     
                     <div class="d-flex justify-content-center align-items-top">
-                        <MudCard Class="w-100   justify-content-center align-items-center">
+                        <MudCard Class="w-100   justify-content-center align-items-center" >
                             <MudCardHeader >
                                 
                                 <CardHeaderContent>
@@ -50,6 +51,9 @@
                                         </MudExpansionPanel>
                                     </MudExpansionPanels>
                                 </MudItem>
+                                <MudItem Class="d-flex justify-content-end align-items-center">
+                                    <MudButton    Variant="MudBlazor.Variant.Filled" OnClick="@Logout" Color=Color.Error  IconSize="Size.Medium">Logout</MudButton>
+                                </MudItem>
                             </MudCardContent>
                         </MudCard>
                     </div>
@@ -75,6 +79,8 @@
 
 @code {
 
+
+
     [CascadingParameter]
     public EmptyLayout Layout { get; set; }
 
@@ -93,6 +99,18 @@
     public List<Classe> Classi=new List<Classe>();
     public List<Materia> Materie = new List<Materia>();
 
+    public bool render = true; 
+
+    public void Logout()
+    {
+        render = false;
+        Navigation.NavigateTo("/");
+        StatoApp = new StatoApp();
+    }
+    protected override bool ShouldRender()
+    {
+        return render;
+    }
 
 
     protected override async Task OnInitializedAsync()
@@ -155,6 +173,7 @@
         {
             Palette = new PaletteLight()
             {
+
                 Primary = Colors.Yellow.Darken3,
                 Secondary = Colors.Orange.Darken4,
                 Tertiary=Colors.Amber.Lighten3
