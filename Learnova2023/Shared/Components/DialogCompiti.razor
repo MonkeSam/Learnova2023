@@ -1,12 +1,33 @@
 ﻿
 @using Shared.Classes
 @inject HttpClient Http
+@inject IDialogService DialogService
+@using MudBlazor.Dialog
 
 <MudDialog  Class=" justify-content-center align-items-center mx-auto my-auto">
+    <TitleContent>
+        <MudGrid Class="w-100 m-0  justify-content-center align-items-center ">
 
+            <MudItem xs="4" Class="w-100">
+                <MudIcon Icon="@(stato.Details.GetType().Name=="Professore"? Icons.Material.Filled.EditCalendar:@Icons.Material.Filled.AutoStories)"></MudIcon>
+            </MudItem>
+            <MudItem xs="4" Class="w-100 ">
+                <MudText Typo="@Typo.h4" Class="fw-bold" Align="Align.Center">Compito</MudText>
+            </MudItem>
+            <MudItem xs="4" Class="w-100 d-flex justify-content-end align-items-center">
+                @if (stato.Details.GetType().Name == "Professore" && Compito.Id != 0 && stato.Details.Id == Compito.Professore.Id)
+                {
+                    <MudIconButton ButtonType=MudBlazor.ButtonType.Submit Icon="@Icons.Material.Filled.Delete" OnClick="Delete" Color="Color.Error"></MudIconButton>
+
+                }
+            </MudItem>
+        </MudGrid>
+
+
+    </TitleContent>
     <DialogContent>
         <MudCard Class="w-100 h-100">
-            <EditForm Model="@(Compito)" >
+            <EditForm Model="@(Compito)">
                 <DataAnnotationsValidator />
                                                  
                 <MudCardContent Style="overflow-y:scroll">
@@ -48,7 +69,7 @@
             
         </MudCard>
         
-        
+               
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -60,6 +81,11 @@
         
     </DialogActions>
 </MudDialog>
+<style>
+            .mud-dialog-title{
+                width:100%;
+            }
+        </style>
 @code {
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
@@ -115,6 +141,17 @@
             string api = $"/api/Compiti/UpdateCompito?idCompito={tmp.Id}&idClasse={stato.idClasse}&date={tmp.Date.Value.ToString("s")}&tipo={tmp.Tipo}&idMateria={tmp.Materia.Id}&desc={tmp.Descrizione}&sk={stato.SessionString}";
             await Http.PutAsJsonAsync<Compito>(api, null);
         }
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+    public async Task Delete()
+    {
+        bool? result=await DialogService.ShowMessageBox("Attenzione!", "Sei sicuro di voler cancellare definitivamente questo compito?", yesText: "Si", cancelText: "Annulla");
+        if (Compito.Id!=0&&result!=null)
+        {
+            string api = $"/api/Compiti/DeleteCompito?idCompito={Compito.Id}&sk={stato.SessionString}";
+            await Http.DeleteAsync(api);
+        }
+        StateHasChanged();
         MudDialog.Close(DialogResult.Ok(true));
     }
 

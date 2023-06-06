@@ -55,19 +55,20 @@
             Parameters.Add("Compito", data);
             var dialog = await DialogService.ShowAsync<DialogCompiti>("Compito", Parameters);
 
-
-            if (data != null)
+            var result = await dialog.Result;
+            if (data.Id != 0)
             {
                 Compiti.Add(data);
                 
                 
-                var result =await dialog.Result;
+                
                 if(!result.Cancelled && bool.TryParse(result.Data.ToString(), out bool resultbool))
                 {
                     LoadData(null);
                 }
-                await scheduler.Reload();
+                
             }
+            await scheduler.Reload();
         }
     }
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Compito> args)
