@@ -9,7 +9,7 @@
         <MudGrid Class="w-100 m-0  justify-content-center align-items-center ">
 
             <MudItem xs="4" Class="w-100">
-                <MudIcon Icon="@(stato.Details.GetType().Name=="Professore"? Icons.Material.Filled.EditCalendar:@Icons.Material.Filled.AutoStories)"></MudIcon>
+                <MudIcon Icon="@(stato.Details.GetType().Name=="Professore"?  Icons.Material.Filled.EditCalendar:@Icons.Material.Filled.AutoStories)"></MudIcon>
             </MudItem>
             <MudItem xs="4" Class="w-100 ">
                 <MudText Typo="@Typo.h4" Class="fw-bold" Align="Align.Center">Compito</MudText>
@@ -17,7 +17,7 @@
             <MudItem xs="4" Class="w-100 d-flex justify-content-end align-items-center">
                 @if (stato.Details.GetType().Name == "Professore" && Compito.Id != 0 && stato.Details.Id == Compito.Professore.Id)
                 {
-                    <MudIconButton ButtonType=MudBlazor.ButtonType.Submit Icon="@Icons.Material.Filled.Delete" OnClick="Delete" Color="Color.Error"></MudIconButton>
+                    <MudIconButton Variant=MudBlazor.Variant.Filled ButtonType=MudBlazor.ButtonType.Submit Icon="@Icons.Material.Filled.Delete" OnClick="Delete" Color="Color.Error" ></MudIconButton>
 
                 }
             </MudItem>
@@ -72,10 +72,10 @@
                
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick="Cancel">Annulla</MudButton>
         @if (stato.Details.GetType() == typeof(Professore))
         {
-            <MudButton Color="Color.Success" Variant="MudBlazor.Variant.Filled" OnClick="Submit">Yes</MudButton>
+            <MudButton Color="Color.Success" Variant="MudBlazor.Variant.Filled" OnClick="Submit">Conferma</MudButton>
         }
         
         
