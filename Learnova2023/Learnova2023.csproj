@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="6.2.3" />
+    <PackageReference Include="MudBlazor" Version="6.4.1" />
     <PackageReference Include="MySql.Data" Version="8.0.33" />
     <PackageReference Include="Radzen.Blazor" Version="4.10.4" />
     <PackageReference Include="System.Net.Http.Json" Version="7.0.1" />

@@ -2,6 +2,7 @@
 @using Shared.Classes
 @inject HttpClient Http
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @using MudBlazor.Dialog
 
 <MudDialog  Class=" justify-content-center align-items-center mx-auto my-auto">
@@ -27,7 +28,7 @@
     </TitleContent>
     <DialogContent>
         <MudCard Class="w-100 h-100">
-            <EditForm Model="@(Compito)">
+            <EditForm Model="@(Compito)"   >
                 <DataAnnotationsValidator />
                                                  
                 <MudCardContent Style="overflow-y:scroll">
@@ -35,9 +36,9 @@
                     
                     <MudGrid>
                         <MudItem xs="6" >   
-                            <MudTextField Label="Professore" AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=true Text=@tmp.Professore.ToString()></MudTextField>
+                            <MudTextField Label="Professore" RequiredError="Campo vuoto" Required=true AdornmentText="" Variant="MudBlazor.Variant.Outlined" T="string" ReadOnly=true Text=@tmp.Professore.ToString()></MudTextField>
                             @*trovare un metodo per fare il binding con la classe "Materia in modo da riuscire a cambiare la materia di un compito tramite Dialog"*@
-                            <MudSelect Label="Materia" Variant="MudBlazor.Variant.Filled"  @bind-Value="tmp.Materia" ReadOnly=Readonly  T=@Materia >
+                            <MudSelect Label="Materia" Required=true  RequiredError="Campo vuoto" Variant="MudBlazor.Variant.Filled" @bind-Value="tmp.Materia" ReadOnly=Readonly T=@Materia>
                                 @foreach(Materia mat in ListaMaterie)
                                 {
                                     <MudSelectItem  T=Materia Value="mat" ></MudSelectItem>
@@ -48,7 +49,7 @@
 
           
                         <MudItem xs="6" >
-                            <MudSelect Label="Tipo" Variant="MudBlazor.Variant.Filled" T="string" @bind-Value=@tmp.Tipo ReadOnly=Readonly>
+                            <MudSelect Label="Tipo" Required=true RequiredError="Campo vuoto" Variant="MudBlazor.Variant.Filled" T="string" @bind-Value=@tmp.Tipo ReadOnly=Readonly>
                                 @foreach (string tip in TipiCompiti)
                                 {
                                     <MudSelectItem T=string Value=@tip>@tip</MudSelectItem>
@@ -88,6 +89,7 @@
         </style>
 @code {
 
+
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     [Parameter]
@@ -106,6 +108,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Snackbar.RemoveByKey("errCompito");
         tmp = new Compito() {Id=Compito.Id,Professore=Compito.Professore,Materia=Compito.Materia,Tipo=Compito.Tipo,Date=Compito.Date,Descrizione=Compito.Descrizione };
 
         if(Compito.Professore != null)
@@ -129,18 +132,28 @@
 
 
     public async Task Submit(){
-
-        if (Compito.Id == 0 && Compito.Equals(tmp) == false)
+        
+        
+        if (tmp.Date != null && tmp.Materia != null && tmp.Tipo != null)
         {
-            string api = $"/api/Compiti/CreateCompito?idClasse={stato.idClasse}&date={tmp.Date.Value.ToString("s")}&tipo={tmp.Tipo}&idProfessore={tmp.Professore.Id}&idMateria={tmp.Materia.Id}&desc={tmp.Descrizione}&sk={stato.SessionString}";
-            await Http.PostAsJsonAsync<Compito>(api, null);
+            if (Compito.Id == 0 && Compito.Equals(tmp) == false)
+            {
+                string api = $"/api/Compiti/CreateCompito?idClasse={stato.idClasse}&date={tmp.Date.Value.ToString("s")}&tipo={tmp.Tipo}&idProfessore={tmp.Professore.Id}&idMateria={tmp.Materia.Id}&desc={tmp.Descrizione}&sk={stato.SessionString}";
+                await Http.PostAsJsonAsync<Compito>(api, null);
 
+            }
+            else if (Compito.Equals(tmp) == false)
+            {
+                string api = $"/api/Compiti/UpdateCompito?idCompito={tmp.Id}&idClasse={stato.idClasse}&date={tmp.Date.Value.ToString("s")}&tipo={tmp.Tipo}&idMateria={tmp.Materia.Id}&desc={tmp.Descrizione}&sk={stato.SessionString}";
+                await Http.PutAsJsonAsync<Compito>(api, null);
+            }
         }
-        else if (Compito.Equals(tmp) == false)
+        else
         {
-            string api = $"/api/Compiti/UpdateCompito?idCompito={tmp.Id}&idClasse={stato.idClasse}&date={tmp.Date.Value.ToString("s")}&tipo={tmp.Tipo}&idMateria={tmp.Materia.Id}&desc={tmp.Descrizione}&sk={stato.SessionString}";
-            await Http.PutAsJsonAsync<Compito>(api, null);
+            Snackbar.Add("Completare tutti i campi del compito", Severity.Error, null, "errCompito");
         }
+
+
         MudDialog.Close(DialogResult.Ok(true));
     }
     public async Task Delete()

@@ -13,8 +13,10 @@
 <RadzenTooltip />
 
 
-<RadzenScheduler Class="h-100"  @ref="scheduler" TodayText="Oggi" SlotRender=@OnSlotRender LoadData=@LoadData SlotSelect=@OnSlotSelect AppointmentRender="@OnAppointmentRender" AppointmentSelect="@OnAppointmentSelect" Data="@Compiti" TItem="Compito" StartProperty="Date" EndProperty="Date" TextProperty="Materia.Nome">
-    <RadzenMonthView  Text="Mese"  />
+<RadzenScheduler Class="h-100"  @ref="scheduler" TodayText="Oggi"  SlotRender=@OnSlotRender LoadData=@LoadData SlotSelect=@OnSlotSelect AppointmentRender="@OnAppointmentRender" AppointmentSelect="@OnAppointmentSelect" Data="@Compiti" TItem="Compito" StartProperty="Date" EndProperty="Date" TextProperty="Materia.Nome">
+    <RadzenMonthView   Text="Mese"  />
+    
+    
 </RadzenScheduler>
 
 <style>
@@ -33,10 +35,11 @@
     public RadzenScheduler<Compito> scheduler;
     List<Compito> Compiti = new List<Compito>();
 
-    
+
 
     public void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
+        
         if (args.Start.Date == DateTime.Today)
         {
             args.Attributes["style"] = $"background: {Colors.Amber.Lighten5};";
